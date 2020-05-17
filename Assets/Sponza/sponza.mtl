@@ -1,0 +1,230 @@
+# Blender MTL File: 'None'
+# Material Count: 25
+
+newmtl Material__25
+Ns 15.2
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.700000 0.700000 0.700000
+map_Kd lion.jpg
+map_bump lion_ddn.jpg
+map_Ka lion.jpg
+
+newmtl Material__298
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd background.jpg
+map_bump background_ddn.jpg
+map_Ka background.jpg
+
+newmtl Material__47
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+# floor ?
+
+newmtl Material__57
+Ns 7.84313
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.200000 0.200000 0.200000
+map_Kd vase_plant.jpg
+map_Ka vase_plant.jpg
+map_d vase_plant_mask.jpg
+
+newmtl arch
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_arch_diff.jpg
+map_Ka sponza_arch_diff.jpg
+map_Ks sponza_arch_spec.jpg
+map_bump sponza_arch_ddn.jpg
+
+newmtl bricks
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd spnza_bricks_a_diff.jpg
+map_bump spnza_bricks_a_ddn.jpg
+map_Ka spnza_bricks_a_diff.jpg
+map_Ks spnza_bricks_a_spec.jpg
+
+newmtl ceiling
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_ceiling_a_diff.jpg
+map_Ka sponza_ceiling_a_diff.jpg
+map_Ks sponza_ceiling_a_spec.jpg
+
+newmtl chain
+Ns 40.2
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.900000 0.900000 0.900000
+map_Kd chain_texture.jpg
+map_bump chain_texture_ddn.jpg
+map_Ka chain_texture.jpg
+map_d chain_texture_mask.jpg
+
+newmtl column_a
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_column_a_diff.jpg
+map_bump sponza_column_a_ddn.jpg
+map_Ka sponza_column_a_diff.jpg
+map_Ks sponza_column_a_spec.jpg
+
+newmtl column_b
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_column_b_diff.jpg
+map_bump sponza_column_b_ddn.jpg
+map_Ka sponza_column_b_diff.jpg
+map_Ks sponza_column_b_spec.jpg
+
+newmtl column_c
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_column_c_diff.jpg
+map_bump sponza_column_c_ddn.jpg
+map_Ka sponza_column_c_diff.jpg
+map_Ks sponza_column_c_spec.jpg
+
+newmtl details
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_details_diff.jpg
+map_Ka sponza_details_diff.jpg
+map_Ks sponza_details_spec.jpg
+
+newmtl fabric_a
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_fabric_diff.jpg
+map_Ka sponza_fabric_diff.jpg
+map_Ks sponza_fabric_spec.jpg
+
+newmtl fabric_c
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_curtain_diff.jpg
+map_Ka sponza_curtain_diff.jpg
+
+newmtl fabric_d
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_fabric_blue_diff.jpg
+map_Ka sponza_fabric_blue_diff.jpg
+map_Ks sponza_fabric_spec.jpg
+
+newmtl fabric_e
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_fabric_green_diff.jpg
+map_Ka sponza_fabric_green_diff.jpg
+map_Ks sponza_fabric_spec.jpg
+
+newmtl fabric_f
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_curtain_green_diff.jpg
+map_Ka sponza_curtain_green_diff.jpg
+map_Ks sponza_fabric_spec.jpg
+
+newmtl fabric_g
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_curtain_blue_diff.jpg
+map_Ka sponza_curtain_blue_diff.jpg
+
+newmtl flagpole
+Ns 40.2
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.900000 0.900000 0.900000
+map_Kd sponza_flagpole_diff.jpg
+map_Ka sponza_flagpole_diff.jpg
+map_Ks sponza_flagpole_spec.jpg
+
+newmtl floor
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_floor_a_diff.jpg
+map_Ka sponza_floor_a_diff.jpg
+map_bump sponza_floor_a_ddn.jpg
+map_Ks sponza_floor_a_spec.jpg
+
+newmtl leaf
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_thorn_diff.jpg
+map_bump sponza_thorn_ddn.jpg
+map_Ka sponza_thorn_diff.jpg
+map_d sponza_thorn_mask.jpg
+
+newmtl roof
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.200000 0.200000 0.200000
+map_Kd sponza_roof_diff.jpg
+map_Ka sponza_roof_diff.jpg
+
+newmtl vase
+Ns 7.84313
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.200000 0.200000 0.200000
+map_Kd vase_dif.jpg
+map_bump vase_ddn.jpg
+map_Ka vase_dif.jpg
+
+newmtl vase_hanging
+Ns 25.84313
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.800000 0.800000 0.800000
+map_Kd vase_hanging.jpg
+map_Ka vase_hanging.jpg
+
+newmtl vase_round
+Ns 25.84313
+Ka 0.000000 0.000000 0.000000
+Kd 0.270400 0.270400 0.270400
+Ks 0.800000 0.800000 0.800000
+map_Kd vase_round.jpg
+map_bump vase_round_ddn.jpg
+map_Ka vase_round.jpg
+map_Ks vase_round_spec.jpg

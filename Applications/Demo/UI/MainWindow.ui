@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Demo 1.0</string>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" rowspan="2">
+     <widget class="CustomOpenGLWidget" name="oglWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>370</width>
+        <height>520</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAdd_camera">
+   <property name="text">
+    <string>&amp;Add camera</string>
+   </property>
+  </action>
+  <action name="actionAdd_directional_light">
+   <property name="text">
+    <string>&amp;Add directional light</string>
+   </property>
+  </action>
+  <action name="actionAdd_spot_light">
+   <property name="text">
+    <string>Add &amp;spot light</string>
+   </property>
+  </action>
+  <action name="actionAdd_point_light">
+   <property name="text">
+    <string>Add &amp;point light</string>
+   </property>
+  </action>
+  <action name="actionLoad_model">
+   <property name="text">
+    <string>&amp;Load model</string>
+   </property>
+  </action>
+  <action name="actionSet_skybox">
+   <property name="text">
+    <string>&amp;Set skybox</string>
+   </property>
+  </action>
+  <action name="actionReload_shaders">
+   <property name="text">
+    <string>&amp;Reload shaders</string>
+   </property>
+  </action>
+  <action name="actionUse_editor_camera">
+   <property name="text">
+    <string>&amp;Use editor camera</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomOpenGLWidget</class>
+   <extends>QWidget</extends>
+   <header>../include/CustomOpenGLWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
