@@ -17,8 +17,7 @@ namespace ALIT {
 class AssetManager {
 public:
     AssetManager();
-    ALIT_API std::string loadAssetFromFile(const std::string &filepath, bool isDebug = false,
-                                           const Mat3 &scale = Mat3{1.f}) const;
+    ALIT_API std::string loadAssetFromFile(const std::string &filepath, const Mat3 &scale = Mat3{1.f}) const;
 
     // right, left, top, bottom, front, back
     ALIT_API const Texture *loadSkyboxTexture(const std::vector<std::string> &files) const;

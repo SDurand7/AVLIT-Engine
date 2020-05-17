@@ -21,11 +21,17 @@ Application::Application(int width, int height)
 
     // Setup debug meshes
     std::string directory = AVLIT_ROOT "/Assets/";
+
     std::string name = loadModel(directory + "Sponza/sponza.obj");
     setSkybox({directory + "Skybox/right.jpg", directory + "Skybox/left.jpg", directory + "Skybox/top.jpg",
                directory + "Skybox/bottom.jpg", directory + "Skybox/front.jpg", directory + "Skybox/back.jpg"});
-    
+
     addDrawable(name, ALIT::Transform(0.05f));
+    addLight(ALIT::LightType::DIRECTIONAL_LIGHT, ALIT::rotate({1.f, 0.f, 0.f}, -ALIT::pi() / 3));
+
+    transform = ALIT::rotate({0.f, 1.f, 0.f}, ALIT::pi() / 2);
+    transform[3] += ALIT::Vec3(-45.f, 4.f, -1.f);
+    addLight(ALIT::LightType::SPOT_LIGHT, transform, {10.f, 8.f, 6.f});
 }
 
 void Application::resize(int width, int height) {

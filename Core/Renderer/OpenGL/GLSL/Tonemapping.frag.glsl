@@ -13,7 +13,6 @@ void main() {
     vec3 color = texture(hdrColor, textureCoord).xyz;
 
     color /= color + 1.f;
-
     color = pow(color, vec3(1 / 2.2f));
 
     outFragColor = vec4(color, 1.f);

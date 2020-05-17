@@ -1,17 +1,17 @@
 #version 410 core
 
-layout (location = 0) in vec2 textureCoord;
-layout (location = 1) in vec3 normal;
-layout (location = 2) in vec3 color;
-layout (location = 3) in vec3 tangent;
-layout (location = 4) in vec3 bitangent;
-layout (location = 5) in float viewZ;
+layout(location = 0) in vec2 textureCoord;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec3 color;
+layout(location = 3) in vec3 tangent;
+layout(location = 4) in vec3 bitangent;
+layout(location = 5) in float viewZ;
 
-layout (location = 0) out vec4 outNormalZ;
-layout (location = 1) out vec4 outAmbientColor;
-layout (location = 2) out vec3 outDiffuseColor;
-layout (location = 3) out vec3 outSpecularColor;
-layout (location = 4) out vec2 outSpecularParameters;
+layout(location = 0) out vec4 outNormalZ;
+layout(location = 1) out vec4 outAmbientColor;
+layout(location = 2) out vec3 outDiffuseColor;
+layout(location = 3) out vec3 outSpecularColor;
+layout(location = 4) out vec2 outSpecularParameters;
 
 
 struct Material {
@@ -46,10 +46,14 @@ void main() {
     if(alpha < 0.25)
         discard;
 
-    outNormalZ = vec4(m.hasNormalTexture ? mat3(tangent, bitangent, normal) * normalize(texture(m.normalTexture, textureCoord).xyz) : normal, viewZ);
-    outAmbientColor = vec4(m.hasKaTexture ? texture(m.kaTexture, textureCoord).xyz : 
-                                           (m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz : m.ka), alpha);
-    outDiffuseColor = m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz: m.kd;
+    outNormalZ = vec4(m.hasNormalTexture
+                          ? mat3(tangent, bitangent, normal) * (2.0 * texture(m.normalTexture, textureCoord).xyz - 1.0)
+                          : normal,
+                      viewZ);
+    outAmbientColor = vec4(m.hasKaTexture ? texture(m.kaTexture, textureCoord).xyz
+                                          : (m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz : m.ka),
+                           alpha);
+    outDiffuseColor = m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz : m.kd;
     outSpecularColor = m.hasKsTexture ? texture(m.ksTexture, textureCoord).xyz : m.ks;
     outSpecularParameters = vec2(m.ns, m.nsStrength);
 }

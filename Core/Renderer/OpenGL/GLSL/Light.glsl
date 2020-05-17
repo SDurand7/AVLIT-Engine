@@ -21,25 +21,31 @@ struct Light {
     float farZ;
 };
 
-float linearizeDepth(float near, float far, float z) { 
+float linearizeDepth(float near, float far, float z) {
     z = 2.f * z - 1.f;
     return near / (far - z * (far - near));
 }
 
 float linearizeDepth(Light l, float z) {
     switch(l.type) {
-        case POINT_LIGHT: 
-        case SPOT_LIGHT: return linearizeDepth(l.nearZ, l.farZ, z);
-        default: return z;
+    case POINT_LIGHT:
+    case SPOT_LIGHT:
+        return linearizeDepth(l.nearZ, l.farZ, z);
+    default:
+        return z;
     }
 }
 
 vec3 lightVector(Light l, vec3 position) {
     switch(l.type) {
-        case POINT_LIGHT: return normalize(l.position - position);
-        case SPOT_LIGHT: return normalize(l.position - position);
-        case DIRECTIONAL_LIGHT: return -l.direction;
-        default: return vec3(0.f);
+    case POINT_LIGHT:
+        return normalize(l.position - position);
+    case SPOT_LIGHT:
+        return normalize(l.position - position);
+    case DIRECTIONAL_LIGHT:
+        return -l.direction;
+    default:
+        return vec3(0.f);
     }
 }
 
@@ -59,9 +65,12 @@ float radialAttenuation(const Light light, const vec3 lightVector) {
 
 float attenuation(Light l, vec3 lightVector, vec3 position) {
     switch(l.type) {
-        case POINT_LIGHT: return distanceAttenuation(l, distance(position, l.position));
-        case SPOT_LIGHT: return distanceAttenuation(l, distance(position, l.position)) * radialAttenuation(l, lightVector);
-        default: return 1.f;
+    case POINT_LIGHT:
+        return distanceAttenuation(l, distance(position, l.position));
+    case SPOT_LIGHT:
+        return distanceAttenuation(l, distance(position, l.position)) * radialAttenuation(l, lightVector);
+    default:
+        return 1.f;
     }
 }
 

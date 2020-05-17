@@ -1,8 +1,8 @@
-#version 410 core 
+#version 410 core
 
-layout (location = 0) in vec2 textureCoord;
+layout(location = 0) in vec2 textureCoord;
 
-layout (location = 0) out float occlusion;
+layout(location = 0) out float occlusion;
 
 
 uniform sampler2D normalZ;
@@ -33,7 +33,7 @@ void main() {
     dir /= dir.w;
     dir /= dir.z;
     vec3 position = z * dir.xyz;
-    
+
     float occlusionFactor = 0.f;
     for(int i = 0; i < 64; ++i) {
         float radius = 1.f;

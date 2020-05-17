@@ -1,8 +1,8 @@
 #version 410 core
 
-layout (location = 0) in vec3 inPosition;
+layout(location = 0) in vec3 inPosition;
 
-layout (location = 0) out vec2 textureCoord;
+layout(location = 0) out vec2 textureCoord;
 
 
 void main() {

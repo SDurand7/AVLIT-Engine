@@ -1,8 +1,8 @@
 #version 410 core
 
-layout (location = 0) in vec2 textureCoord;
+layout(location = 0) in vec2 textureCoord;
 
-layout (location = 0) out float blurred;
+layout(location = 0) out float blurred;
 
 
 uniform sampler2D toBlur;

@@ -23,7 +23,7 @@ AssetManager::AssetManager()
       m_materialManager{std::make_unique<MaterialManager>()}, m_textureManager{std::make_unique<TextureManager>()} {}
 
 /// Inspired by https://learnopengl.com/Model-Loading/Model
-std::string AssetManager::loadAssetFromFile(const std::string &filepath, bool isDebug, const Mat3 &scale) const {
+std::string AssetManager::loadAssetFromFile(const std::string &filepath, const Mat3 &scale) const {
     std::string name;
     Assimp::Importer importer;
     const aiScene *scene =
@@ -130,8 +130,8 @@ Material *AssetManager::processMaterial(aiMaterial *mat, const std::string &dire
     MaterialUptr newMaterial = std::make_unique<Material>();
     material = newMaterial.get();
 
-    if(mat->GetTextureCount(aiTextureType_NORMALS) > 0)
-        newMaterial->setNormalTexture(loadTexture(mat, directory, aiTextureType_NORMALS, m_textureManager.get()));
+    if(mat->GetTextureCount(aiTextureType_HEIGHT) > 0)
+        newMaterial->setNormalTexture(loadTexture(mat, directory, aiTextureType_HEIGHT, m_textureManager.get()));
 
     if(mat->GetTextureCount(aiTextureType_AMBIENT) > 0)
         newMaterial->setKaTexture(loadTexture(mat, directory, aiTextureType_AMBIENT, m_textureManager.get()));

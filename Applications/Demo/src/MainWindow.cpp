@@ -31,38 +31,40 @@ void MainWindow::initializeDemo() {
     m_app = std::make_unique<Application>(ui->oglWidget->width(), ui->oglWidget->height());
     const float speed = 10.f;
 
-    m_eventManager.addKey(Qt::Key::Key_Z, [demo = m_app.get(), speed](float elapsed) {
+    m_eventManager.addKey(Qt::Key::Key_Z, [app = m_app.get(), speed](float elapsed) {
         float distance = speed * elapsed;
-        demo->translateCameraFront(distance);
+        app->translateCameraFront(distance);
     });
 
-    m_eventManager.addKey(Qt::Key::Key_S, [demo = m_app.get(), speed](float elapsed) {
+    m_eventManager.addKey(Qt::Key::Key_S, [app = m_app.get(), speed](float elapsed) {
         float distance = speed * elapsed;
-        demo->translateCameraFront(-distance);
+        app->translateCameraFront(-distance);
     });
 
-    m_eventManager.addKey(Qt::Key::Key_D, [demo = m_app.get(), speed](float elapsed) {
+    m_eventManager.addKey(Qt::Key::Key_D, [app = m_app.get(), speed](float elapsed) {
         float distance = speed * elapsed;
-        demo->translateCameraRight(distance);
+        app->translateCameraRight(distance);
     });
 
-    m_eventManager.addKey(Qt::Key::Key_Q, [demo = m_app.get(), speed](float elapsed) {
+    m_eventManager.addKey(Qt::Key::Key_Q, [app = m_app.get(), speed](float elapsed) {
         float distance = speed * elapsed;
-        demo->translateCameraRight(-distance);
+        app->translateCameraRight(-distance);
     });
 
-    m_eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [demo = m_app.get()](QPoint start, QPoint end) {
+    m_eventManager.addKey(Qt::Key::Key_F5, [app = m_app.get()](float) { app->reloadShaders(); });
+
+    m_eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [app = m_app.get()](QPoint start, QPoint end) {
         int dx = end.x() - start.x();
         int dy = end.y() - start.y();
-        demo->rotateCamera(dx, dy);
+        app->rotateCamera(dx, dy);
     });
 
     m_eventManager.setMouseReleaseCallback(
-        MouseEvent::LEFT_CLICKED, [demo = m_app.get(), &eventManager = m_eventManager]() {
-            eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [demo](QPoint start, QPoint end) {
+        MouseEvent::LEFT_CLICKED, [app = m_app.get(), &eventManager = m_eventManager]() {
+            eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [app](QPoint start, QPoint end) {
                 int dx = end.x() - start.x();
                 int dy = end.y() - start.y();
-                demo->rotateCamera(dx, dy);
+                app->rotateCamera(dx, dy);
             });
         });
 }
