@@ -3,7 +3,7 @@
 #include <Core/Base/include/Math.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 SceneObject::SceneObject(const std::string &name, const Transform &transform)
     : m_name{name}, m_transform{transform}, m_aabb{transform[3]}, m_visible{true} {}
@@ -21,4 +21,4 @@ void SceneObject::setName(const std::string &name) { m_name = name; }
 
 const Model *SceneObject::model() const { return nullptr; }
 
-} // namespace ALIT
+} // namespace AVLIT

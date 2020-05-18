@@ -1,5 +1,4 @@
-#ifndef ALIT_TYPES_HPP
-#define ALIT_TYPES_HPP
+#pragma once
 
 #include <memory>
 
@@ -7,7 +6,7 @@
 #include <Dependencies/glm/glm/gtc/type_ptr.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 using uint = unsigned int;
 using ulong = unsigned long;
@@ -60,7 +59,6 @@ class Scene;
 class SceneBVHNode;
 class SceneObject;
 class AABB;
-class Ray;
 
 using AssetManagerUptr = std::unique_ptr<AssetManager>;
 using DrawableUptr = std::unique_ptr<Drawable>;
@@ -77,6 +75,4 @@ using SceneUptr = std::unique_ptr<Scene>;
 using SceneBVHNodeUptr = std::unique_ptr<SceneBVHNode>;
 using SceneObjectUptr = std::unique_ptr<SceneObject>;
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

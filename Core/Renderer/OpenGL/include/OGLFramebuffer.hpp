@@ -1,5 +1,4 @@
-#ifndef ALIT_OGLFRAMEBUFFER_HPP
-#define ALIT_OGLFRAMEBUFFER_HPP
+#pragma once
 
 #include "glad.h"
 
@@ -13,7 +12,7 @@
 
 // This is the messiest thing I've ever done
 
-namespace ALIT {
+namespace AVLIT {
 
 class OGLFramebuffer {
 public:
@@ -26,13 +25,13 @@ public:
                    GLuint textureUnit);
 
     // Shadow map FBO
-    OGLFramebuffer(GLuint width, GLuint height, GLuint textureUnit); 
+    OGLFramebuffer(GLuint width, GLuint height, GLuint textureUnit);
 
     // SSAO FBO
     OGLFramebuffer(GLuint width, GLuint height, GLuint noiseW, GLuint noiseH, GLuint textureUnit);
 
     // Blur FBO
-    OGLFramebuffer(GLuint width, GLuint height, GLuint textureUnit, GLint textureCompareMode); 
+    OGLFramebuffer(GLuint width, GLuint height, GLuint textureUnit, GLint textureCompareMode);
 
     ~OGLFramebuffer();
 
@@ -67,8 +66,6 @@ private:
     std::pair<GLuint, GLuint> m_size;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLFramebuffer.inl>
-
-#endif

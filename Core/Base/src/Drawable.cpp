@@ -4,7 +4,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Drawable::Drawable(const std::string &name, const Transform &transform, Model *model)
     : SceneObject{name, transform}, m_model{model} {
@@ -24,4 +24,4 @@ void Drawable::_scale(const Mat3 &scaling) {
     SceneObject::scale(scaling);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

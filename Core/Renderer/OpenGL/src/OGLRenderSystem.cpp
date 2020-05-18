@@ -10,7 +10,7 @@
 #include <Core/Base/include/Material.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights,
                                  const SceneBVHNode *graphRoot)
@@ -305,4 +305,4 @@ void OGLRenderSystem::setupTextureUnits() {
     m_hdrFBO.setParameters(0, shader, 14);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

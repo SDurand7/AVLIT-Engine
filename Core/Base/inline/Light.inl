@@ -1,7 +1,7 @@
 #include <Core/Renderer/include/Shader.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 inline Mat4 Light::view() const {
     Mat4 view;
@@ -26,4 +26,4 @@ inline bool Light::isLit() const { return m_lit; }
 
 inline void Light::switchState() { m_lit = !m_lit; }
 
-} // namespace ALIT
+} // namespace AVLIT

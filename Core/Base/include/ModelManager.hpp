@@ -1,5 +1,4 @@
-#ifndef ALIT_MODELMANAGER_HPP
-#define ALIT_MODELMANAGER_HPP
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -10,7 +9,7 @@
 #include <Core/Base/include/Model.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class ModelManager {
 public:
@@ -18,7 +17,7 @@ public:
 
     const std::vector<std::string> &names() const;
 
-    ALIT_API Model *model(const std::string &name) const;
+    AVLIT_API Model *model(const std::string &name) const;
 
     void addModel(const std::string &name, ModelUptr &&model);
 
@@ -28,6 +27,4 @@ private:
     std::unordered_map<std::string, ModelUptr> m_models;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

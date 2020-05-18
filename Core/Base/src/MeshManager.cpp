@@ -1,7 +1,7 @@
 #include "MeshManager.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Mesh *MeshManager::mesh(const std::string &name) const {
     auto meshIt = m_meshes.find(name);
@@ -22,4 +22,4 @@ Mesh *MeshManager::addMesh(const std::string &name, Material *material, std::vec
     return meshptr;
 }
 
-} // namespace ALIT
+} // namespace AVLIT

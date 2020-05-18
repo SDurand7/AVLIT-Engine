@@ -4,7 +4,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Camera::Camera(const std::string &name, const Transform &transform, int width, int height, float fovy, float near,
                float far)
@@ -15,4 +15,5 @@ Camera::Camera(const std::string &name, const Transform &transform, int width, i
 
     updateProjectionMatrix();
 }
-} // namespace ALIT
+
+} // namespace AVLIT

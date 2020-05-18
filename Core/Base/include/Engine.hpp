@@ -1,5 +1,4 @@
-#ifndef ALIT_ENGINE_HPP
-#define ALIT_ENGINE_HPP
+#pragma once
 
 #ifdef DX_
 
@@ -11,7 +10,7 @@
 #include <Core/Base/include/Types.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class Engine {
 public:
@@ -19,19 +18,19 @@ public:
     void operator=(const Engine &) = delete;
 
     // Must be called after the creation of the OpenGL context
-    ALIT_API static void createInstance();
+    AVLIT_API static void createInstance();
 
-    ALIT_API static Engine *instance();
+    AVLIT_API static Engine *instance();
 
-    ALIT_API static void deleteInstance();
+    AVLIT_API static void deleteInstance();
 
-    ALIT_API Scene *scene() const;
+    AVLIT_API Scene *scene() const;
 
-    ALIT_API AssetManager *assetManager() const;
+    AVLIT_API AssetManager *assetManager() const;
 
 private:
     Engine();
-    
+
     static Engine *m_instance;
 
     SceneUptr m_scene;
@@ -39,6 +38,4 @@ private:
     // ...
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

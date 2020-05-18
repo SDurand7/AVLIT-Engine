@@ -12,12 +12,12 @@ CustomOpenGLWidget::~CustomOpenGLWidget() {}
 
 void CustomOpenGLWidget::initializeGL() {
     connect(context(), SIGNAL(aboutToBeDestroyed()), this, SLOT(release()));
-    ALIT::Engine::createInstance();
+    AVLIT::Engine::createInstance();
     emit contextCreated();
 }
 
-void CustomOpenGLWidget::resizeGL(int w, int h) { ALIT::Engine::instance()->scene()->resize(w, h); }
+void CustomOpenGLWidget::resizeGL(int w, int h) { AVLIT::Engine::instance()->scene()->resizeCanvas(w, h); }
 
-void CustomOpenGLWidget::paintGL() { ALIT::Engine::instance()->scene()->render(); }
+void CustomOpenGLWidget::paintGL() { AVLIT::Engine::instance()->scene()->render(); }
 
-void CustomOpenGLWidget::release() { ALIT::Engine::deleteInstance(); }
+void CustomOpenGLWidget::release() { AVLIT::Engine::deleteInstance(); }

@@ -1,5 +1,4 @@
-#ifndef ALIT_ASSETMANAGER_HPP
-#define ALIT_ASSETMANAGER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -12,17 +11,17 @@ struct aiScene;
 struct aiMesh;
 struct aiMaterial;
 
-namespace ALIT {
+namespace AVLIT {
 
 class AssetManager {
 public:
     AssetManager();
-    ALIT_API std::string loadAssetFromFile(const std::string &filepath, const Mat3 &scale = Mat3{1.f}) const;
+    AVLIT_API std::string loadAssetFromFile(const std::string &filepath, const Mat3 &scale = Mat3{1.f}) const;
 
     // right, left, top, bottom, front, back
-    ALIT_API const Texture *loadSkyboxTexture(const std::vector<std::string> &files) const;
+    AVLIT_API const Texture *loadSkyboxTexture(const std::vector<std::string> &files) const;
 
-    ALIT_API const ModelManager *modelManager() const;
+    AVLIT_API const ModelManager *modelManager() const;
 
 private:
     Mesh *processMesh(const aiMesh *mesh, const aiScene *scene, const std::string &directory, const Mat3 &scale) const;
@@ -35,6 +34,4 @@ private:
     TextureManagerUptr m_textureManager;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

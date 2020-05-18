@@ -1,5 +1,4 @@
-#ifndef ALIT_OGLRENDERSYSTEM_HPP
-#define ALIT_OGLRENDERSYSTEM_HPP
+#pragma once
 
 #include "glad.h"
 
@@ -14,7 +13,7 @@
 #include <Core/Renderer/OpenGL/include/OGLFramebuffer.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 class OGLRenderSystem {
 public:
     OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights,
@@ -69,8 +68,6 @@ private:
     OGLVAO m_quadVAO;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLRenderSystem.inl>
-
-#endif

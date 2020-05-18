@@ -76,9 +76,10 @@ The demo uses Qt (feel free to modify the CMakeLists.txt file in the Application
 
 
 ## What's coming
-Here's a non exhaustive list of features and things I need to do on the project in general:
+Here's a non exhaustive list of features I plan on implementing:
 
  - TAA
+ - Area lights
  - DX12
  - SSGI
  - SSR

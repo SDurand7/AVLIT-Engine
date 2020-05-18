@@ -1,11 +1,10 @@
-#ifndef ALIT_MATERIAL_HPP
-#define ALIT_MATERIAL_HPP
+#pragma once
 
 #include <Core/Base/include/Macros.hpp>
 #include <Core/Base/include/Types.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class Material {
 public:
@@ -50,8 +49,6 @@ private:
     bool m_twoSided = false;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/Material.inl>
-
-#endif

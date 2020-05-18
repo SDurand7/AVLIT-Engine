@@ -1,5 +1,4 @@
-#ifndef ALIT_TEXTUREMANAGER_HPP
-#define ALIT_TEXTUREMANAGER_HPP
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -9,7 +8,7 @@
 #include <Core/Renderer/include/Texture.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class TextureManager {
 public:
@@ -28,6 +27,4 @@ private:
     TextureUptr m_cubemap;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline Mat4 Camera::view() const {
     Mat4 view;
@@ -70,4 +70,4 @@ inline void Camera::updateProjectionMatrix() const {
     m_dirtyProjection = false;
 }
 
-} // namespace ALIT
+} // namespace AVLIT

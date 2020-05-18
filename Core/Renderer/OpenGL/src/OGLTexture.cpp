@@ -1,7 +1,7 @@
 #include "OGLTexture.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 OGLTexture::OGLTexture(const uchar *data, int width, int height, InternalFormat internalFormat, Format format) {
     glGenTextures(1, &m_textureID);
@@ -34,4 +34,4 @@ OGLTexture::OGLTexture(uchar *datas[6], int width[6], int height[6]) {
 
 OGLTexture::~OGLTexture() { glDeleteTextures(1, &m_textureID); }
 
-} // namespace ALIT
+} // namespace AVLIT

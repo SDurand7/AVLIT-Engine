@@ -2,16 +2,16 @@
 #include <Core/Base/include/Model.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
-ALIT_API inline void SceneObject::rotate(const Mat3 &rotation, Vec3 center) {
+inline void SceneObject::rotate(const Mat3 &rotation, Vec3 center) {
     _rotate(rotation, center);
 
     if(m_graphNode)
         m_graphNode->updateParentsAABBs();
 }
 
-ALIT_API inline void SceneObject::translate(const Vec3 &translation) {
+inline void SceneObject::translate(const Vec3 &translation) {
     _translate(translation);
 
     if(m_graphNode)
@@ -64,4 +64,4 @@ inline void SceneObject::_translate(const Vec3 &translation) {
         m_graphNode->translate(translation);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

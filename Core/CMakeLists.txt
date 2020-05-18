@@ -6,7 +6,7 @@ add_library(AVLIT-core SHARED ${headers} ${sources})
 target_include_directories(AVLIT-core PRIVATE Base/include Renderer/include Renderer/OpenGL/include ../Dependencies/assimp/include ${CMAKE_BINARY_DIR}/Dependencies/assimp/include)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-DALIT_DEBUG)
+    add_definitions(-DAVLIT_DEBUG)
     if(MSVC)
         set(flags "/W4" "/std:c++17")
     else()

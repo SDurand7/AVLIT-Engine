@@ -8,7 +8,7 @@
 #include <Core/Base/include/TextureManager.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Engine *Engine::m_instance = nullptr;
 
@@ -38,4 +38,4 @@ Scene *Engine::scene() const { return m_scene.get(); }
 
 AssetManager *Engine::assetManager() const { return m_assetManager.get(); }
 
-} // namespace ALIT
+} // namespace AVLIT

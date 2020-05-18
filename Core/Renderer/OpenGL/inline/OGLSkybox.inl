@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline void OGLSkybox::bind(int i, OGLShader *prog, GLuint textureUnit) const {
     m_buffer.bind();
@@ -7,4 +7,4 @@ inline void OGLSkybox::bind(int i, OGLShader *prog, GLuint textureUnit) const {
 
 inline bool OGLSkybox::hasTexture() const { return m_texture; }
 
-} // namespace ALIT
+} // namespace AVLIT

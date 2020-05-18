@@ -1,5 +1,4 @@
-#ifndef CUSTOMOPENGLWIDGET_HPP
-#define CUSTOMOPENGLWIDGET_HPP
+#pragma once
 
 #include <Core/Base/include/Engine.hpp>
 
@@ -26,5 +25,3 @@ protected:
 private slots:
     void release();
 };
-
-#endif

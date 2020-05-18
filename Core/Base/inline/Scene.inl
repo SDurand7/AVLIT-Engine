@@ -1,7 +1,7 @@
 #include <Core/Renderer/include/RenderSystem.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 inline void Scene::render() { m_renderSystem->render(); }
 
@@ -13,12 +13,13 @@ inline void Scene::setCurrentCamera(Camera *camera) { m_renderSystem->setCurrent
 
 inline SceneBVHNode *Scene::graphRoot() const { return m_graphRoot.get(); }
 
-inline void Scene::resize(int width, int height) {
+inline void Scene::resizeCanvas(int width, int height) {
     m_renderSystem->resize(width, height);
+
     for(auto &camera : m_cameras) {
         camera->setWidth(width);
         camera->setHeight(height);
     }
 }
 
-} // namespace ALIT
+} // namespace AVLIT

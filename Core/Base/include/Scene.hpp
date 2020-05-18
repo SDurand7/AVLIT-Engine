@@ -1,5 +1,4 @@
-#ifndef ALIT_SCENE_HPP
-#define ALIT_SCENE_HPP
+#pragma once
 
 #include <vector>
 
@@ -10,7 +9,7 @@
 #include <Core/Base/include/Light.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class Scene {
 public:
@@ -20,35 +19,35 @@ public:
     Scene(const Scene &) = delete;
     void operator=(const Scene &) = delete;
 
-    ALIT_API inline void render();
+    AVLIT_API inline void render();
 
-    ALIT_API inline const std::vector<LightUptr> &lights() const;
+    AVLIT_API inline const std::vector<LightUptr> &lights() const;
 
-    ALIT_API inline const std::vector<CameraUptr> &cameras() const;
+    AVLIT_API inline const std::vector<CameraUptr> &cameras() const;
 
-    ALIT_API inline void setCurrentCamera(Camera *camera);
+    AVLIT_API inline void setCurrentCamera(Camera *camera);
 
-    ALIT_API inline SceneBVHNode *graphRoot() const;
+    AVLIT_API inline SceneBVHNode *graphRoot() const;
 
-    ALIT_API inline void resize(int width, int height);
+    AVLIT_API inline void resizeCanvas(int width, int height);
 
-    ALIT_API SceneBVHNode *addDrawable(SceneBVHNode *parent, const std::string &name, const Transform &transform,
+    AVLIT_API SceneBVHNode *addDrawable(SceneBVHNode *parent, const std::string &name, const Transform &transform,
                                        Model *model);
 
-    ALIT_API SceneBVHNode *addLight(SceneBVHNode *parent, const std::string &name, const Transform &transform,
-                                    LightType type, const Color3 &color, float range = 30.f,
+    AVLIT_API SceneBVHNode *addLight(SceneBVHNode *parent, const std::string &name, const Transform &transform,
+                                    LightType type, const Color3 &color,
                                     float innerAngle = pi() / 8, float outerAngle = pi() / 6);
 
-    ALIT_API SceneBVHNode *addCamera(SceneBVHNode *parent, const std::string &name, const Transform &transform,
+    AVLIT_API SceneBVHNode *addCamera(SceneBVHNode *parent, const std::string &name, const Transform &transform,
                                      int width, int height, float fovy, float near = 0.4f, float far = 450.f);
 
-    ALIT_API void reloadShaders();
+    AVLIT_API void reloadShaders();
 
-    ALIT_API void setAmbientColor(const Color3 &color);
+    AVLIT_API void setAmbientColor(const Color3 &color);
 
-    ALIT_API void setSkybox(const Texture *texture);
+    AVLIT_API void setSkybox(const Texture *texture);
 
-    ALIT_API void deleteGraphNode(SceneBVHNode *node);
+    AVLIT_API void deleteGraphNode(SceneBVHNode *node);
 
 private:
     SceneBVHNodeUptr m_graphRoot;
@@ -62,8 +61,6 @@ private:
     std::vector<CameraUptr> m_cameras;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/Scene.inl>
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#pragma once
 
 #include <Applications/Demo/include/CustomOpenGLWidget.hpp>
 #include <Applications/Demo/include/EventManager.hpp>
@@ -53,5 +52,3 @@ private:
 
     std::unique_ptr<Application> m_app;
 };
-
-#endif

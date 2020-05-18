@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline void OGLVAO::operator=(OGLVAO &&vao) noexcept {
     m_vaoID = vao.m_vaoID;
@@ -12,4 +12,4 @@ inline void OGLVAO::bind() const { glBindVertexArray(m_vaoID); }
 
 inline void OGLVAO::unbindAll() { glBindVertexArray(0); }
 
-} // namespace ALIT
+} // namespace AVLIT

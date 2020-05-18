@@ -1,7 +1,7 @@
 #include <Core/Base/include/SceneObject.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 inline const std::string &SceneBVHNode::name() const { return m_sceneObject->name(); }
 
@@ -32,4 +32,4 @@ inline void SceneBVHNode::translate(const Vec3 &translation) {
     updateAABB();
 }
 
-} // namespace ALIT
+} // namespace AVLIT

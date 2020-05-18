@@ -1,7 +1,7 @@
 #include "ModelManager.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 const std::vector<std::string> &ModelManager::names() const { return m_names; }
 
@@ -14,4 +14,4 @@ Model *ModelManager::model(const std::string &name) const {
 
 void ModelManager::addModel(const std::string &name, ModelUptr &&model) { m_models.emplace(name, std::move(model)); }
 
-} // namespace ALIT
+} // namespace AVLIT

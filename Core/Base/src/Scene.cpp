@@ -5,7 +5,7 @@
 #include <algorithm>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Scene::Scene()
     : m_graphRoot{std::make_unique<SceneBVHNode>(nullptr)}, m_renderSystem{std::make_unique<RenderSystem>(
@@ -40,16 +40,16 @@ SceneBVHNode *Scene::addDrawable(SceneBVHNode *parent, const std::string &name, 
 }
 
 SceneBVHNode *Scene::addLight(SceneBVHNode *parent, const std::string &name, const Transform &transform, LightType type,
-                              const Color3 &color, float range, float innerAngle, float outerAngle) {
+                              const Color3 &color, float innerAngle, float outerAngle) {
     switch(type) {
     case LightType::POINT_LIGHT:
-        m_lights.emplace_back(std::make_unique<PointLight>(name, transform, color, range));
+        m_lights.emplace_back(std::make_unique<PointLight>(name, transform, color));
         break;
     case LightType::DIRECTIONAL_LIGHT:
         m_lights.emplace_back(std::make_unique<DirectionalLight>(name, transform, color));
         break;
     case LightType::SPOT_LIGHT:
-        m_lights.emplace_back(std::make_unique<SpotLight>(name, transform, color, range, innerAngle, outerAngle));
+        m_lights.emplace_back(std::make_unique<SpotLight>(name, transform, color, innerAngle, outerAngle));
         break;
     default:
         return nullptr;
@@ -89,9 +89,9 @@ void Scene::setAmbientColor(const Color3 &color) { m_lights[0]->setColor(color);
 void Scene::setSkybox(const Texture *texture) { m_renderSystem->setSkybox(texture); }
 
 void Scene::deleteGraphNode(SceneBVHNode *node) {
-    ALIT_ASSERT((std::find_if(m_nodes.begin(), m_nodes.end(),
-                              [node](const SceneBVHNodeUptr &p) { return p.get() == node; }) != m_nodes.end()),
-                "[ASSERTION FAILED]: Specified node isn't part of the graph");
+    AVLIT_ASSERT((std::find_if(m_nodes.begin(), m_nodes.end(),
+                               [node](const SceneBVHNodeUptr &p) { return p.get() == node; }) != m_nodes.end()),
+                 "[ASSERTION FAILED]: Specified node isn't part of the graph");
 
     m_drawables.erase(
         std::remove_if(m_drawables.begin(), m_drawables.end(),
@@ -111,4 +111,4 @@ void Scene::deleteGraphNode(SceneBVHNode *node) {
         m_nodes.end());
 }
 
-} // namespace ALIT
+} // namespace AVLIT

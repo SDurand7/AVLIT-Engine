@@ -1,7 +1,7 @@
 #include "Material.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 void Material::setKa(Color3 ka) { m_ka = ka; }
 void Material::setKd(Color3 kd) { m_kd = kd; }
@@ -18,4 +18,4 @@ void Material::setAlphaTexture(const Texture *alphaTexture) { m_alphaTex = alpha
 
 void Material::setTwoSided(bool twoSided) { m_twoSided = twoSided; }
 
-} // namespace ALIT
+} // namespace AVLIT

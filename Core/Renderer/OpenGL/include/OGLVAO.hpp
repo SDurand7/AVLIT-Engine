@@ -1,5 +1,4 @@
-#ifndef OGLVAO_ALIT
-#define OGLVAO_ALIT
+#pragma once
 
 #include "glad.h"
 
@@ -9,7 +8,7 @@
 #include <Core/Base/include/Types.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class OGLVAO {
 public:
@@ -17,7 +16,9 @@ public:
     void operator=(const OGLVAO &) = delete;
 
     OGLVAO() = default;
+
     OGLVAO(const Mesh &mesh, bool isDebug = false); // debug meshes only have positions and normal as attributes
+
     ~OGLVAO();
 
     inline void operator=(OGLVAO &&vao) noexcept;
@@ -33,8 +34,6 @@ private:
     std::vector<GLuint> m_buffers;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLVAO.inl>
-
-#endif

@@ -1,7 +1,7 @@
 #include <Core/Renderer/OpenGL/include/OGLShader.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 inline void OGLTexture::bind(int i, Shader *shader, int textureUnit, GLenum textureType) const {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
@@ -9,4 +9,4 @@ inline void OGLTexture::bind(int i, Shader *shader, int textureUnit, GLenum text
     shader->setUniform(i, textureUnit);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

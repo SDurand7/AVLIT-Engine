@@ -5,6 +5,7 @@
 #define DIRECTIONAL_LIGHT 1
 #define SPOT_LIGHT 2
 #define AMBIENT_LIGHT 3
+#define POLYGONAL_LIGHT 4
 
 
 struct Light {
@@ -13,7 +14,6 @@ struct Light {
     vec3 color;
     vec3 position;
     vec3 direction;
-    float range;
     float cosInnerAngle;
     float cosOuterAngle;
 
@@ -49,12 +49,8 @@ vec3 lightVector(Light l, vec3 position) {
     }
 }
 
-float distanceAttenuation(Light l, float dist) {
-    float distToRange = dist / l.range;
-    float attenuation = max(1 - (distToRange * distToRange * distToRange * distToRange), 0.f);
-
-    // TODO: Tweak (1/dist^2 gives a really huge attenuation)
-    return attenuation * attenuation;
+float distanceAttenuation(float dist) {
+    return 1 / (dist * dist);
 }
 
 float radialAttenuation(const Light light, const vec3 lightVector) {
@@ -66,9 +62,9 @@ float radialAttenuation(const Light light, const vec3 lightVector) {
 float attenuation(Light l, vec3 lightVector, vec3 position) {
     switch(l.type) {
     case POINT_LIGHT:
-        return distanceAttenuation(l, distance(position, l.position));
+        return distanceAttenuation(distance(position, l.position));
     case SPOT_LIGHT:
-        return distanceAttenuation(l, distance(position, l.position)) * radialAttenuation(l, lightVector);
+        return distanceAttenuation(distance(position, l.position)) * radialAttenuation(l, lightVector);
     default:
         return 1.f;
     }

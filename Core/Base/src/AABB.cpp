@@ -4,7 +4,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 #include <iostream>
-namespace ALIT {
+namespace AVLIT {
 
 AABB::AABB(const Vec3 &point) : m_min{point}, m_max{point} {}
 
@@ -18,4 +18,4 @@ void AABB::compute(const Model *model, const Transform &transform) {
     applyTransform(transform);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

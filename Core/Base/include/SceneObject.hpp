@@ -1,5 +1,4 @@
-#ifndef ALIT_SCENEOBJECT_HPP
-#define ALIT_SCENEOBJECT_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -9,30 +8,30 @@
 #include <Core/Base/include/AABB.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class SceneObject {
 public:
     SceneObject(const std::string &name, const Transform &transform);
     virtual ~SceneObject() = default;
 
-    ALIT_API virtual void scale(const Mat3 &scaling);
+    AVLIT_API virtual void scale(const Mat3 &scaling);
 
-    ALIT_API inline void rotate(const Mat3 &rotation, Vec3 center);
+    AVLIT_API inline void rotate(const Mat3 &rotation, Vec3 center);
 
-    ALIT_API inline void translate(const Vec3 &translation);
+    AVLIT_API inline void translate(const Vec3 &translation);
 
-    ALIT_API inline const std::string &name();
+    AVLIT_API inline const std::string &name();
 
-    ALIT_API inline const Transform &transform() const;
+    AVLIT_API inline const Transform &transform() const;
 
-    ALIT_API inline const Vec3 &position() const;
+    AVLIT_API inline const Vec3 &position() const;
 
-    ALIT_API inline const Vec3 &front() const;
+    AVLIT_API inline const Vec3 &front() const;
 
-    ALIT_API inline const Vec3 &right() const;
+    AVLIT_API inline const Vec3 &right() const;
 
-    ALIT_API inline const Vec3 &up() const;
+    AVLIT_API inline const Vec3 &up() const;
 
     inline const AABB &aabb() const;
 
@@ -42,11 +41,11 @@ public:
 
     inline void setTransform(Transform &&trf);
 
-    ALIT_API SceneBVHNode *graphNode() const;
+    AVLIT_API SceneBVHNode *graphNode() const;
 
-    ALIT_API void setGraphNode(SceneBVHNode *graphNode);
+    AVLIT_API void setGraphNode(SceneBVHNode *graphNode);
 
-    ALIT_API void setName(const std::string &name);
+    AVLIT_API void setName(const std::string &name);
 
     virtual const Model *model() const;
 
@@ -64,8 +63,6 @@ private:
     inline void _translate(const Vec3 &translation);
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/SceneObject.inl>
-
-#endif

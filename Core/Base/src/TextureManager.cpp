@@ -1,7 +1,7 @@
 #include "TextureManager.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 const Texture *TextureManager::addTexture(const std::string &path, const uchar *data, int width, int height,
                                           InternalFormat internalFormat, Format format) {
@@ -23,4 +23,4 @@ const Texture *TextureManager::addCubemap(uchar *datas[6], int width[6], int hei
     return m_cubemap.get();
 }
 
-} // namespace ALIT
+} // namespace AVLIT

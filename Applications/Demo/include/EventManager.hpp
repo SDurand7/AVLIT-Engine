@@ -1,5 +1,4 @@
-﻿#ifndef EVENTMANAGER_HPP
-#define EVENTMANAGER_HPP
+﻿#pragma once
 
 #define MOUSEBINDS 4
 
@@ -51,5 +50,3 @@ private:
     QPoint m_startPos;
     QPoint m_lastPos;
 };
-
-#endif

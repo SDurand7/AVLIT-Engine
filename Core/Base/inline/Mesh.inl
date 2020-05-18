@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline const GPUBuffer &Mesh::buffer() const { return m_buffer; }
 
@@ -31,4 +31,4 @@ inline bool Mesh::hasColors() const { return !m_colors.empty(); }
 inline bool Mesh::hasTangentsAndBitangents() const { return !m_tangents.empty() && !m_bitangents.empty(); }
 
 
-} // namespace ALIT
+} // namespace AVLIT

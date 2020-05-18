@@ -16,7 +16,7 @@
 #include <Core/Base/include/MaterialManager.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 AssetManager::AssetManager()
     : m_modelManager{std::make_unique<ModelManager>()}, m_meshManager{std::make_unique<MeshManager>()},
@@ -54,9 +54,9 @@ std::string AssetManager::loadAssetFromFile(const std::string &filepath, const M
 
 Mesh *AssetManager::processMesh(const aiMesh *mesh, const aiScene *scene, const std::string &directory,
                                 const Mat3 &scale) const {
-    Mesh *alitMesh;
-    if((alitMesh = m_meshManager->mesh(mesh->mName.C_Str())))
-        return alitMesh;
+    Mesh *avlitMesh;
+    if((avlitMesh = m_meshManager->mesh(mesh->mName.C_Str())))
+        return avlitMesh;
 
     std::vector<uint> indices;
     std::vector<Vec3> vertices;
@@ -247,4 +247,4 @@ const Texture *AssetManager::loadSkyboxTexture(const std::vector<std::string> &f
 
 const ModelManager *AssetManager::modelManager() const { return m_modelManager.get(); }
 
-} // namespace ALIT
+} // namespace AVLIT

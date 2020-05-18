@@ -22,12 +22,12 @@ public:
 
     void useEditorCamera();
 
-    ALIT::SceneBVHNode *addCamera(const std::string &name, const ALIT::Transform &transform) const;
+    AVLIT::SceneBVHNode *addCamera(const std::string &name, const AVLIT::Transform &transform) const;
 
-    ALIT::SceneBVHNode *addDrawable(const std::string &name, const ALIT::Transform &transform);
+    AVLIT::SceneBVHNode *addDrawable(const std::string &name, const AVLIT::Transform &transform);
 
-    ALIT::SceneBVHNode *addLight(ALIT::LightType type, const ALIT::Transform &transform,
-                                 const ALIT::Color3 &color = ALIT::Color3(0.6f));
+    AVLIT::SceneBVHNode *addLight(AVLIT::LightType type, const AVLIT::Transform &transform,
+                                 const AVLIT::Color3 &color = AVLIT::Color3(0.6f));
 
     std::string loadModel(const std::string &filename);
 
@@ -49,13 +49,13 @@ public:
 
     void setShowAABBs(bool showAABBs);
 
-    ALIT::Scene *scene() const;
+    AVLIT::Scene *scene() const;
 
-    void setCamera(ALIT::Camera *camera);
+    void setCamera(AVLIT::Camera *camera);
 
 private:
-    ALIT::Scene *m_scene;
-    ALIT::Camera *m_camera;
+    AVLIT::Scene *m_scene;
+    AVLIT::Camera *m_camera;
 
     // Used to create new cameras
     static const float m_defaultFovy;

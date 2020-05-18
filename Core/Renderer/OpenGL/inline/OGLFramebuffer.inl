@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline void OGLFramebuffer::operator=(OGLFramebuffer &&framebuffer) noexcept {
     m_fboID = framebuffer.m_fboID;
@@ -34,4 +34,4 @@ inline void OGLFramebuffer::blitDepthBuffer(int width, int height) {
 
 inline std::pair<GLuint, GLuint> OGLFramebuffer::size() const { return m_size; }
 
-} // namespace ALIT
+} // namespace AVLIT

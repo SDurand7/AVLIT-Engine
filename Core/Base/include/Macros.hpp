@@ -1,9 +1,8 @@
-#ifndef ALIT_MACROS_HPP
-#define ALIT_MACROS_HPP
+#pragma once
 
 
 /// Debug macros
-#ifdef ALIT_DEBUG
+#ifdef AVLIT_DEBUG
 #include <cassert>
 #include <iostream>
 #include <string>
@@ -55,7 +54,7 @@ static std::chrono::steady_clock::time_point start;
 #define NONE while(false)
 // clang-format on
 
-#define ALIT_ASSERT(test, msg) NONE
+#define AVLIT_ASSERT(test, msg) NONE
 #define LOG(msg) NONE
 #define STR(v) NONE
 #define VEC_STR(v) NONE
@@ -75,14 +74,11 @@ static std::chrono::steady_clock::time_point start;
 // clang-format off
 #ifdef _MSC_VER
 #    ifdef DLL_EXPORT
-#        define ALIT_API __declspec(dllexport)
+#        define AVLIT_API __declspec(dllexport)
 #    else
-#        define ALIT_API __declspec(dllimport)
+#        define AVLIT_API __declspec(dllimport)
 #    endif
 #else
-#    define ALIT_API
+#    define AVLIT_API
 #endif
 // clang-format on
-
-
-#endif

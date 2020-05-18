@@ -3,7 +3,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 OGLSkybox::OGLSkybox(const Texture *texture)
     : m_buffer{Mesh{
@@ -29,4 +29,4 @@ void OGLSkybox::operator=(OGLSkybox &&skybox) {
     m_texture = std::move(skybox.m_texture);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

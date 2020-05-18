@@ -1,12 +1,10 @@
-#ifndef ALIT_LIGHT_HPP
-#define ALIT_LIGHT_HPP
+#pragma once
 
 #include <Core/Base/include/SceneObject.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
-// TODO: store the view matrix and use a dirty flag
 class Light : public SceneObject {
 public:
     // transform should be a composition of a rotation and a translation, debug models should be scaled on load
@@ -20,13 +18,13 @@ public:
 
     inline Mat4 view() const;
 
-    ALIT_API inline Color3 color() const;
+    AVLIT_API inline Color3 color() const;
 
-    ALIT_API inline void setColor(const Color3 &color);
+    AVLIT_API inline void setColor(const Color3 &color);
 
-    ALIT_API inline bool isLit() const;
+    AVLIT_API inline bool isLit() const;
 
-    ALIT_API inline void switchState();
+    AVLIT_API inline void switchState();
 
 protected:
     Color3 m_color;
@@ -36,21 +34,15 @@ protected:
 
 class PointLight : public Light {
 public:
-    PointLight(const std::string &name, const Transform &transform, const Color3 &color, float range);
+    PointLight(const std::string &name, const Transform &transform, const Color3 &color);
 
     void setParameters(int i, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 
-    ALIT_API float range() const;
-
-    ALIT_API void setRange(float range);
-
 private:
     static const float maxRange;
     static const Mat4 m_projection;
-
-    float m_range;
 };
 
 class DirectionalLight : public Light {
@@ -67,30 +59,25 @@ private:
 
 class SpotLight : public Light {
 public:
-    SpotLight(const std::string &name, const Transform &transform, const Color3 &color, float range, float innerAngle,
+    SpotLight(const std::string &name, const Transform &transform, const Color3 &color, float innerAngle,
               float outerAngle);
 
     void setParameters(int i, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 
-    ALIT_API float range() const;
+    AVLIT_API float innerAngle() const;
 
-    ALIT_API void setRange(float range);
+    AVLIT_API void setInnerAngle(float angle);
 
-    ALIT_API float innerAngle() const;
+    AVLIT_API float outerAngle() const;
 
-    ALIT_API void setInnerAngle(float angle);
-
-    ALIT_API float outerAngle() const;
-
-    ALIT_API void setOuterAngle(float angle);
+    AVLIT_API void setOuterAngle(float angle);
 
 private:
     static const float maxRange;
     static const Mat4 m_projection;
 
-    float m_range;
     float m_cosInnerAngle;
     float m_cosOuterAngle;
 };
@@ -107,8 +94,6 @@ private:
     static const Mat4 m_projection;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/Light.inl>
-
-#endif

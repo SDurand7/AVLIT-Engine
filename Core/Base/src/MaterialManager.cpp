@@ -1,7 +1,7 @@
 #include "MaterialManager.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Material *MaterialManager::material(const std::string &name) const {
     auto matIt = m_materials.find(name);
@@ -14,4 +14,4 @@ void MaterialManager::addMaterial(const std::string &name, MaterialUptr &&materi
     m_materials.emplace(name, std::move(material));
 }
 
-} // namespace ALIT
+} // namespace AVLIT

@@ -5,7 +5,7 @@
 #include <regex>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 const char *OGLShader::prefix = AVLIT_ROOT "/Core/Renderer/OpenGL/GLSL/";
 
@@ -144,4 +144,4 @@ void OGLShader::parseIncludes(std::string &src) const {
     }
 }
 
-} // namespace ALIT
+} // namespace AVLIT

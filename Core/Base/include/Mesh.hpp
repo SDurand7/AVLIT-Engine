@@ -1,5 +1,4 @@
-#ifndef ALIT_MESH_HPP
-#define ALIT_MESH_HPP
+#pragma once
 
 #include <vector>
 
@@ -11,7 +10,7 @@
 #include <Core/Renderer/include/GPUBuffer.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class Mesh {
 public:
@@ -56,8 +55,6 @@ private:
     std::vector<Vec3> m_bitangents;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/Mesh.inl>
-
-#endif

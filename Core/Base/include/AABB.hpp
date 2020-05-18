@@ -1,5 +1,4 @@
-#ifndef ALIT_AABB_HPP
-#define ALIT_AABB_HPP
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -8,7 +7,7 @@
 #include <Core/Base/include/Types.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 using AABBVertices = std::array<Vec3, 8>;
 
@@ -37,8 +36,6 @@ private:
     Vec3 m_max = Vec3{0.f};
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/AABB.inl>
-
-#endif

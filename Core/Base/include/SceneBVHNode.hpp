@@ -1,5 +1,4 @@
-#ifndef ALIT_SCENEBVHNODE_HPP
-#define ALIT_SCENEBVHNODE_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -8,7 +7,7 @@
 #include <Core/Base/include/AABB.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class SceneBVHNode {
 public:
@@ -18,9 +17,9 @@ public:
 
     SceneBVHNode(SceneBVHNode &&node);
 
-    ALIT_API inline const std::string &name() const;
+    AVLIT_API inline const std::string &name() const;
 
-    ALIT_API inline int childrenCount() const;
+    AVLIT_API inline int childrenCount() const;
 
     inline const AABB &aabb() const;
 
@@ -34,13 +33,13 @@ public:
 
     void addChild(SceneBVHNode *child);
 
-    ALIT_API SceneBVHNode *parent() const;
+    AVLIT_API SceneBVHNode *parent() const;
 
-    ALIT_API void removeChild(SceneBVHNode *child);
+    AVLIT_API void removeChild(SceneBVHNode *child);
 
-    ALIT_API void transferTo(SceneBVHNode *newParent);
+    AVLIT_API void transferTo(SceneBVHNode *newParent);
 
-    ALIT_API SceneBVHNode *child(int i) const;
+    AVLIT_API SceneBVHNode *child(int i) const;
 
     void updateAABB();
 
@@ -56,8 +55,6 @@ private:
     AABB m_aabb;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Base/inline/SceneBVHNode.inl>
-
-#endif

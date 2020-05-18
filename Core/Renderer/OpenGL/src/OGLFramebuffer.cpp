@@ -6,7 +6,7 @@
 #include <Core/Base/include/Math.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 GLint OGLFramebuffer::m_defaultID = -1;
 
@@ -182,4 +182,4 @@ void OGLFramebuffer::resize(GLuint width, GLuint height) {
     m_size.second = height;
 }
 
-} // namespace ALIT
+} // namespace AVLIT

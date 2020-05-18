@@ -3,7 +3,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 OGLVAO::OGLVAO(const Mesh &mesh, bool isDebug) : m_buffers(2) {
     glGenVertexArrays(1, &m_vaoID);
@@ -79,11 +79,11 @@ OGLVAO::OGLVAO(const Mesh &mesh, bool isDebug) : m_buffers(2) {
         }
     }
     glBindVertexArray(0);
-} // namespace ALIT
+} // namespace AVLIT
 
 OGLVAO::~OGLVAO() {
     glDeleteBuffers(static_cast<GLsizei>(m_buffers.size()), m_buffers.data());
     glDeleteVertexArrays(1, &m_vaoID);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline const Vec3 &AABB::min() const { return m_min; }
 
@@ -52,4 +52,4 @@ inline void AABB::translate(const Vec3 &translation) {
     m_max += translation;
 }
 
-} // namespace ALIT
+} // namespace AVLIT

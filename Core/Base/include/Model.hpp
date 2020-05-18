@@ -1,5 +1,4 @@
-#ifndef ALIT_MODEL_HPP
-#define ALIT_MODEL_HPP
+#pragma once
 
 #include <vector>
 
@@ -8,7 +7,7 @@
 #include <Core/Base/include/AABB.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class Model {
 public:
@@ -18,7 +17,7 @@ public:
 
     const AABB &aabb() const;
 
-    ALIT_API const std::vector<std::pair<Material *, std::vector<Mesh *>>> &meshesByMaterial() const;
+    AVLIT_API const std::vector<std::pair<Material *, std::vector<Mesh *>>> &meshesByMaterial() const;
 
 private:
     std::vector<std::pair<Material *, std::vector<Mesh *>>> m_meshesByMaterial;
@@ -26,6 +25,4 @@ private:
     AABB m_aabb;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

@@ -6,7 +6,7 @@
 #include <Core/Base/include/Material.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 void Model::addMesh(Mesh *mesh) {
     auto material = mesh->material();
@@ -28,4 +28,4 @@ const std::vector<std::pair<Material *, std::vector<Mesh *>>> &Model::meshesByMa
     return m_meshesByMaterial;
 }
 
-} // namespace ALIT
+} // namespace AVLIT

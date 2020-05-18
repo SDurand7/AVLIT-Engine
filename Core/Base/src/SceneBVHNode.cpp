@@ -1,7 +1,7 @@
 #include "SceneBVHNode.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 SceneBVHNode::SceneBVHNode(SceneObject *object) : m_children{}, m_sceneObject{object} {
     if(m_sceneObject)
@@ -80,4 +80,4 @@ void SceneBVHNode::updateParentsAABBs() {
     }
 }
 
-} // namespace ALIT
+} // namespace AVLIT

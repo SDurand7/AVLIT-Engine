@@ -1,5 +1,4 @@
-#ifndef ALIT_MATERIALMANAGER_HPP
-#define ALIT_MATERIALMANAGER_HPP
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -9,10 +8,9 @@
 #include <Core/Base/include/Material.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class MaterialManager {
-    // TODO: check if two material with the same name are actually identical (especially the unamed ones)
 public:
     MaterialManager() = default;
 
@@ -24,6 +22,4 @@ private:
     std::unordered_map<std::string, MaterialUptr> m_materials;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

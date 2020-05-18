@@ -1,4 +1,4 @@
-namespace ALIT {
+namespace AVLIT {
 
 inline void OGLShader::bind() const { glUseProgram(m_programID); }
 
@@ -18,4 +18,4 @@ inline void OGLShader::setUniform(int i, const Mat4 &value) {
     glUniformMatrix4fv(m_locations[i], 1, GL_FALSE, value_ptr(value));
 }
 
-} // namespace ALIT
+} // namespace AVLIT

@@ -1,5 +1,4 @@
-#ifndef ALIT_MESHMANAGER_HPP
-#define ALIT_MESHMANAGER_HPP
+#pragma once
 
 #include <unordered_map>
 #include <vector>
@@ -10,7 +9,7 @@
 #include <Core/Base/include/Mesh.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class MeshManager {
     // TODO: check if two meshes with the same name are actually identical (especially the unamed ones: "")
@@ -27,6 +26,4 @@ private:
     std::unordered_map<std::string, MeshUptr> m_meshes;
 };
 
-} // namespace ALIT
-
-#endif
+} // namespace AVLIT

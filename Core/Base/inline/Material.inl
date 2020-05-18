@@ -2,7 +2,7 @@
 #include <Core/Renderer/include/Texture.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 // TODO: handle the case where we have an alpha map
 inline bool Material::isOpaque() const { return m_alpha > 0.99; }
@@ -35,4 +35,4 @@ inline void Material::setParameters(int i, Shader *shader) const {
     shader->setUniform(i + 15, m_alpha);
 }
 
-} // namespace ALIT
+} // namespace AVLIT

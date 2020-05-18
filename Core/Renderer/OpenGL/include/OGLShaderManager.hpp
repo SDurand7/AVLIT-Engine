@@ -1,5 +1,4 @@
-#ifndef ALIT_OGLSHADERMANAGER_HPP
-#define ALIT_OGLSHADERMANAGER_HPP
+#pragma once
 
 #include "glad.h"
 
@@ -12,9 +11,18 @@
 #include <Core/Renderer/OpenGL/include/OGLShader.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
-enum class OGLShaderType { GBUFFER = 0, DEFERRED_LIGHTING = 1, SHADOW_MAPPING = 2, SKYBOX = 3, TONEMAPPING = 4, SSAO = 5, BLUR = 6, DEBUG = 7 };
+enum class OGLShaderType {
+    GBUFFER = 0,
+    DEFERRED_LIGHTING = 1,
+    SHADOW_MAPPING = 2,
+    SKYBOX = 3,
+    TONEMAPPING = 4,
+    SSAO = 5,
+    BLUR = 6,
+    DEBUG = 7
+};
 
 class OGLShaderManager {
 public:
@@ -27,8 +35,6 @@ private:
     std::vector<OGLShader> m_shaders;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLShaderManager.inl>
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef ALIT_OGLSHADER_HPP
-#define ALIT_OGLSHADER_HPP
+#pragma once
 
 #include "glad.h"
 
@@ -10,7 +9,9 @@
 #include <Core/Base/include/Types.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
+
+enum class OGLShaderStage { COMPUTE, VERTEX, GEOMETRY, FRAGMENT };
 
 class OGLShader {
 public:
@@ -42,8 +43,6 @@ private:
     std::vector<GLint> m_locations;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLShader.inl>
-
-#endif

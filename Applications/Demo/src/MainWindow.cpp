@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->oglWidget, SIGNAL(contextCreated()), this, SLOT(initializeDemo()));
 
-    m_drawTimer.start(1000 / 60.f);
+    m_drawTimer.start(1000.f / 144);
     connect(&m_drawTimer, SIGNAL(timeout()), &m_eventManager, SLOT(pollEvents()));
     connect(&m_drawTimer, SIGNAL(timeout()), ui->oglWidget, SLOT(update()));
 }

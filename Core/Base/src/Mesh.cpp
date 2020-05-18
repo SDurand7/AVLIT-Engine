@@ -3,7 +3,7 @@
 #include <Core/Base/include/Material.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 Mesh::Mesh(Material *material, std::vector<uint> &&indices, std::vector<Vec3> &&vertices, std::vector<Vec2> &&texCoords,
            std::vector<Vec3> &&normals, std::vector<Vec3> &&colors, std::vector<Vec3> &&tangents,
@@ -18,4 +18,4 @@ Mesh::Mesh(Material *material, std::vector<uint> &&indices, std::vector<Vec3> &&
     }
 }
 
-} // namespace ALIT
+} // namespace AVLIT

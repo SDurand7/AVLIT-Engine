@@ -1,7 +1,7 @@
 #include "OGLShaderManager.hpp"
 
 
-namespace ALIT {
+namespace AVLIT {
 
 OGLShaderManager::OGLShaderManager(const std::vector<std::pair<std::string, std::string>> &sourceFiles) {
     m_shaders.reserve(sourceFiles.size());
@@ -10,4 +10,4 @@ OGLShaderManager::OGLShaderManager(const std::vector<std::pair<std::string, std:
     }
 }
 
-} // namespace ALIT
+} // namespace AVLIT

@@ -1,5 +1,4 @@
-#ifndef ALIT_OGLSKYBOX_HPP
-#define ALIT_OGLSKYBOX_HPP
+#pragma once
 
 #include "glad.h"
 
@@ -11,7 +10,7 @@
 #include <Core/Renderer/OpenGL/include/OGLTexture.hpp>
 
 
-namespace ALIT {
+namespace AVLIT {
 
 class OGLSkybox {
 public:
@@ -32,8 +31,6 @@ private:
     const Texture *m_texture = nullptr;
 };
 
-} // namespace ALIT
+} // namespace AVLIT
 
 #include <Core/Renderer/OpenGL/inline/OGLSkybox.inl>
-
-#endif
