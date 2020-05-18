@@ -21,7 +21,7 @@ else()
     if(MSVC)
         set(flags "/O2" "/W4" "/std:c++17")
     else()
-        set(flags "-O3" "-Wall" "-std=c++17" "-Wno-error=unused-command-line-argument")
+        set(flags "-O3" "-Wall" "-std=c++17")
     endif()
 endif()
 
