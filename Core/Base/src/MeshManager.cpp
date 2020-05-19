@@ -11,12 +11,10 @@ Mesh *MeshManager::mesh(const std::string &name) const {
 }
 
 Mesh *MeshManager::addMesh(const std::string &name, Material *material, std::vector<uint> &&indices,
-                           std::vector<Vec3> &&vertices, std::vector<Vec2> &&texCoords,
-                          std::vector<Vec3> &&normals, std::vector<Vec3> &&colors, std::vector<Vec3> &&tangents,
-                          std::vector<Vec3> &&bitangents) {
-    auto mesh =
-        std::make_unique<Mesh>(material, std::move(indices), std::move(vertices), std::move(texCoords),
-                               std::move(normals), std::move(colors), std::move(tangents), std::move(bitangents));
+                           std::vector<Vec3> &&vertices, std::vector<Vec2> &&texCoords, std::vector<Vec3> &&normals,
+                           std::vector<Vec3> &&tangents, std::vector<Vec3> &&bitangents) {
+    auto mesh = std::make_unique<Mesh>(material, std::move(indices), std::move(vertices), std::move(texCoords),
+                                       std::move(normals), std::move(tangents), std::move(bitangents));
     Mesh *meshptr = mesh.get();
     m_meshes.emplace(name, std::move(mesh));
     return meshptr;

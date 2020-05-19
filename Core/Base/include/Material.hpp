@@ -16,43 +16,31 @@ public:
 
     inline void setParameters(const std::string &name, Shader *shader) const;
 
-    void setKa(Color3 ka);
-
-    void setKd(Color3 kd);
-
-    void setKs(Color3 ks);
-
-    void setNs(float ns);
-
-    void setNsStrength(float nsStrength);
+    void setAlbedo(Color3 albedo);
 
     void setAlpha(float alpha);
 
-    void setNormalTexture(const Texture *normalTexture);
+    void setNormalMap(const Texture *normalMap);
 
-    void setKaTexture(const Texture *kaTexture);
+    void setAlbedoMap(const Texture *albedoMap);
 
-    void setKdTexture(const Texture *kdTexture);
+    void setMetalnessMap(const Texture *metalnessMap);
 
-    void setKsTexture(const Texture *ksTexture);
+    void setRoughnessMap(const Texture *roughnessMap);
 
-    void setAlphaTexture(const Texture *alphaTexture);
+    void setAlphaMap(const Texture *alphaMap);
 
     void setTwoSided(bool twoSided);
 
 private:
-    Color3 m_ka = {1.f, 1.f, 1.f};
-    Color3 m_kd = {1.f, 1.f, 1.f};
-    Color3 m_ks = {1.f, 1.f, 1.f};
-    float m_ns = 1.f;
-    float m_nsStrength = 0.25f;
+    Color3 m_albedo = {1.f, 1.f, 1.f};
     float m_alpha = 1.f;
 
-    const Texture *m_normalTex = nullptr;
-    const Texture *m_kaTex = nullptr;
-    const Texture *m_kdTex = nullptr;
-    const Texture *m_ksTex = nullptr;
-    const Texture *m_alphaTex = nullptr;
+    const Texture *m_normalMap = nullptr;
+    const Texture *m_albedoMap = nullptr;
+    const Texture *m_metalnessMap = nullptr;
+    const Texture *m_roughnessMap = nullptr;
+    const Texture *m_alphaMap = nullptr;
 
     bool m_twoSided = false;
 };

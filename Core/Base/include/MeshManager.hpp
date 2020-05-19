@@ -20,7 +20,7 @@ public:
 
     Mesh *addMesh(const std::string &name, Material *material, std::vector<uint> &&indices,
                   std::vector<Vec3> &&vertices, std::vector<Vec2> &&texCoords, std::vector<Vec3> &&normals,
-                  std::vector<Vec3> &&colors, std::vector<Vec3> &&tangents, std::vector<Vec3> &&bitangents);
+                  std::vector<Vec3> &&tangents, std::vector<Vec3> &&bitangents);
 
 private:
     std::unordered_map<std::string, MeshUptr> m_meshes;

@@ -24,6 +24,7 @@ OGLShader::OGLShader(const OGLShaderStageFiles &sources) : m_programID{glCreateP
         glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &length);
         std::string log(length, ' ');
         glGetProgramInfoLog(m_programID, length, nullptr, &log[0]);
+
         AVLIT_ERROR("shader program linking failed with the following:\n" + log);
     }
 }
@@ -63,7 +64,8 @@ GLuint OGLShader::parseGLSL(GLenum shaderType, const std::string &filename) {
             glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
             std::string log(length, ' ');
             glGetShaderInfoLog(id, length, nullptr, &log[0]);
-            AVLIT_ERROR("shader compilation failed with the following:\n" + log);
+
+            AVLIT_ERROR("shader \"" + filename + "\" compilation failed with the following:\n" + log);
         }
     } else {
         AVLIT_ERROR("could not open file " + filename);
@@ -86,20 +88,6 @@ void OGLShader::parseIncludes(std::string &src) const {
         src.replace(match.position(), match.length(), stream.str());
         begin = src.cbegin() + match.position() + stream.str().length();
     }
-}
-
-void OGLShader::setUniform(GLint location, int value) { glUniform1i(location, value); }
-
-void OGLShader::setUniform(GLint location, uint value) { glUniform1ui(location, value); }
-
-void OGLShader::setUniform(GLint location, float value) { glUniform1f(location, value); }
-
-void OGLShader::setUniform(GLint location, bool value) { glUniform1i(location, value ? 1 : 0); }
-
-void OGLShader::setUniform(GLint location, const Vec3 &value) { glUniform3fv(location, 1, value_ptr(value)); }
-
-void OGLShader::setUniform(GLint location, const Mat4 &value) {
-    glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(value));
 }
 
 } // namespace AVLIT

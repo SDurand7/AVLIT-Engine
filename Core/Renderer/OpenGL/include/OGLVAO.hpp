@@ -17,7 +17,7 @@ public:
 
     OGLVAO() = default;
 
-    OGLVAO(const Mesh &mesh, bool isDebug = false); // debug meshes only have positions and normal as attributes
+    OGLVAO(const Mesh &mesh);
 
     ~OGLVAO();
 

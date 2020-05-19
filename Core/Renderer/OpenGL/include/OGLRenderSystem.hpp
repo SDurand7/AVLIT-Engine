@@ -32,40 +32,54 @@ public:
     inline void resize(int width, int height);
 
 private:
-    void gbufferPass();
-    void ssaoPass();
-    void ssaoBlurPass();
-    void lightingPass();
-    void tonemappingPass();
-    void skyboxPass();
-
-    void drawLight(Light *light);
-    void drawShadowMap(Light *light);
-
-    void traverseGraph(OGLShader *shader, const SceneBVHNode *node) const;
-    void drawAABB(OGLShader *shader, const AABB &aabb) const;
-
-    bool inFrustum(const AABB &aabb, const Mat4 &projection) const;
-
-    void setupTextureUnits();
-
-
     Camera *m_camera = nullptr;
 
     const std::vector<DrawableUptr> &m_drawables;
+
     const std::vector<LightUptr> &m_lights;
 
     const SceneBVHNode *m_graphRoot;
 
     OGLShaderManager m_shaderManager;
+
     OGLSkybox m_skybox;
+
     OGLFramebuffer m_GBuffer;
+
     OGLFramebuffer m_shadowMap;
+
     OGLFramebuffer m_ssaoFBO;
+
     OGLFramebuffer m_blurFBO;
+
     OGLFramebuffer m_hdrFBO;
 
     OGLVAO m_quadVAO;
+
+private:
+    void gbufferPass();
+
+    void ssaoPass();
+
+    void ssaoBlurPass();
+
+    void lightingPass();
+
+    void tonemappingPass();
+
+    void skyboxPass();
+
+    void drawLight(Light *light);
+
+    void drawShadowMap(Light *light);
+
+    void traverseGraph(OGLShader *shader, const SceneBVHNode *node) const;
+
+    void drawAABB(OGLShader *shader, const AABB &aabb) const;
+
+    bool inFrustum(const AABB &aabb, const Mat4 &projection) const;
+
+    void setupTextureUnits();
 };
 
 } // namespace AVLIT

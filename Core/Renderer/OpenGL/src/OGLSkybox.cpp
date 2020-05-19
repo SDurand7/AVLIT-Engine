@@ -16,12 +16,7 @@ OGLSkybox::OGLSkybox(const Texture *texture)
            {-1.f, -1.f, 1.f},
            {1.f, -1.f, 1.f},
            {1.f, 1.f, 1.f},
-           {-1.f, 1.f, 1.f}},
-          {},
-          {},
-          {},
-          {},
-          {}}},
+           {-1.f, 1.f, 1.f}}}},
       m_texture{texture} {}
 
 void OGLSkybox::operator=(OGLSkybox &&skybox) {

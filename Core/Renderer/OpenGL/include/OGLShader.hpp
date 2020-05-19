@@ -52,17 +52,17 @@ private:
 
     void parseIncludes(std::string &src) const;
 
-    void setUniform(GLint location, int value);
+    inline void setUniform(GLint location, int value);
 
-    void setUniform(GLint location, uint value);
+    inline void setUniform(GLint location, uint value);
 
-    void setUniform(GLint location, float value);
+    inline void setUniform(GLint location, float value);
 
-    void setUniform(GLint location, bool value);
+    inline void setUniform(GLint location, bool value);
 
-    void setUniform(GLint location, const Vec3 &value);
+    inline void setUniform(GLint location, const Vec3 &value);
 
-    void setUniform(GLint location, const Mat4 &value);
+    inline void setUniform(GLint location, const Mat4 &value);
 };
 
 } // namespace AVLIT

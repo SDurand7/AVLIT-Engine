@@ -16,8 +16,6 @@ inline const std::vector<Vec2> &Mesh::texCoords() const { return m_texCoords; }
 
 inline const std::vector<Vec3> &Mesh::normals() const { return m_normals; }
 
-inline const std::vector<Vec3> &Mesh::colors() const { return m_colors; }
-
 inline const std::vector<Vec3> &Mesh::tangents() const { return m_tangents; }
 
 inline const std::vector<Vec3> &Mesh::bitangents() const { return m_bitangents; }
@@ -26,9 +24,7 @@ inline bool Mesh::hasTexCoords() const { return !m_texCoords.empty(); }
 
 inline bool Mesh::hasNormals() const { return !m_normals.empty(); }
 
-inline bool Mesh::hasColors() const { return !m_colors.empty(); }
-
-inline bool Mesh::hasTangentsAndBitangents() const { return !m_tangents.empty() && !m_bitangents.empty(); }
+inline bool Mesh::hasTangentSpace() const { return !m_tangents.empty() && !m_bitangents.empty(); }
 
 
 } // namespace AVLIT

@@ -1,38 +1,28 @@
 #version 410 core
 
-layout(location = 0) in vec2 textureCoord;
-layout(location = 1) in vec3 normal;
-layout(location = 2) in vec3 color;
-layout(location = 3) in vec3 tangent;
-layout(location = 4) in vec3 bitangent;
-layout(location = 5) in float viewZ;
+layout(location = 0) in vec4 texCoordViewZNormalX;
+layout(location = 1) in vec4 tangentNormalY;
+layout(location = 2) in vec4 bitangentNormalZ;
 
 layout(location = 0) out vec4 outNormalZ;
-layout(location = 1) out vec4 outAmbientColor;
-layout(location = 2) out vec3 outDiffuseColor;
-layout(location = 3) out vec3 outSpecularColor;
-layout(location = 4) out vec2 outSpecularParameters;
+layout(location = 1) out vec4 outAlbedo;
+layout(location = 2) out vec2 outMetalnessRoughness;
 
 
 struct Material {
-    // boolean for vertex colors ?
-    bool hasNormalTexture;
-    bool hasKaTexture;
-    bool hasKdTexture;
-    bool hasKsTexture;
-    bool hasAlphaTexture;
+    bool hasNormalMap;
+    bool hasAlbedoMap;
+    bool hasMetalnessMap;
+    bool hasRoughnessMap;
+    bool hasAlphaMap;
 
-    sampler2D normalTexture;
-    sampler2D kaTexture;
-    sampler2D kdTexture;
-    sampler2D ksTexture;
-    sampler2D alphaTexture;
+    sampler2D normalMap;
+    sampler2D albedoMap;
+    sampler2D metalnessMap;
+    sampler2D roughnessMap;
+    sampler2D alphaMap;
 
-    vec3 ka;
-    vec3 kd;
-    vec3 ks;
-    float ns;
-    float nsStrength;
+    vec3 albedo;
     float alpha;
 };
 
@@ -41,20 +31,26 @@ uniform Material material;
 
 
 void main() {
-    float alpha = material.hasAlphaTexture ? texture(material.alphaTexture, textureCoord).x : material.alpha;
+    vec2 textureCoord = texCoordViewZNormalX.xy;
 
+    float alpha = material.hasAlphaMap ? texture(material.alphaMap, textureCoord).x : material.alpha;
     if(alpha < 0.25)
         discard;
 
-    outNormalZ = vec4(material.hasNormalTexture ? mat3(tangent, bitangent, normal) *
-                                                      (2.0 * texture(material.normalTexture, textureCoord).xyz - 1.0)
-                                                : normal,
+    float viewZ = texCoordViewZNormalX.z;
+
+    // Unpacking everything
+    vec3 normal = vec3(texCoordViewZNormalX.w, tangentNormalY.w, bitangentNormalZ.w);
+    vec3 tangent = tangentNormalY.xyz;
+    vec3 bitangent = bitangentNormalZ.xyz;
+
+    outNormalZ = vec4(material.hasNormalMap ? normalize(mat3(tangent, bitangent, normal) *
+                                                        (2.f * texture(material.normalMap, textureCoord).xyz - 1.f))
+                                            : normal,
                       viewZ);
-    outAmbientColor = vec4(material.hasKaTexture
-                               ? texture(material.kaTexture, textureCoord).xyz
-                               : (material.hasKdTexture ? texture(material.kdTexture, textureCoord).xyz : material.ka),
-                           alpha);
-    outDiffuseColor = material.hasKdTexture ? texture(material.kdTexture, textureCoord).xyz : material.kd;
-    outSpecularColor = material.hasKsTexture ? texture(material.ksTexture, textureCoord).xyz : material.ks;
-    outSpecularParameters = vec2(material.ns, material.nsStrength);
+
+    outAlbedo = vec4(material.hasAlbedoMap ? texture(material.albedoMap, textureCoord).xyz : material.albedo, alpha);
+
+    outMetalnessRoughness = vec2(material.hasMetalnessMap ? texture(material.metalnessMap, textureCoord).x : 0.25f,
+                                 material.hasRoughnessMap ? texture(material.roughnessMap, textureCoord).x : 1.f);
 }

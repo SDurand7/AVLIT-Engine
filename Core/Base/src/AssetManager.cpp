@@ -32,7 +32,8 @@ std::string AssetManager::loadAssetFromFile(const std::string &filepath, const M
                                         aiProcess_OptimizeMeshes | aiProcess_GenNormals | aiProcess_GenUVCoords);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-        AVLIT_LOG("[ERROR]: Assimp failed to load \"" + filepath + "\" with the following: " + importer.GetErrorString());
+        AVLIT_LOG("[ERROR]: Assimp failed to load \"" + filepath +
+                  "\" with the following: " + importer.GetErrorString());
         return name;
     }
 
@@ -95,13 +96,6 @@ Mesh *AssetManager::processMesh(const aiMesh *mesh, const aiScene *scene, const 
         }
     }
 
-    if(mesh->HasVertexColors(0)) {
-        colors.reserve(mesh->mNumVertices);
-        for(uint i = 0; i < mesh->mNumVertices; ++i) {
-            colors.emplace_back(mesh->mColors[0][i].r, mesh->mColors[0][i].g, mesh->mColors[0][i].b);
-        }
-    }
-
     if(mesh->HasTangentsAndBitangents()) {
         tangents.reserve(mesh->mNumVertices);
         bitangents.reserve(mesh->mNumVertices);
@@ -115,8 +109,7 @@ Mesh *AssetManager::processMesh(const aiMesh *mesh, const aiScene *scene, const 
 
     auto material = processMaterial(scene->mMaterials[mesh->mMaterialIndex], directory);
     return m_meshManager->addMesh(mesh->mName.C_Str(), material, std::move(indices), std::move(vertices),
-                                  std::move(texCoords), std::move(normals), std::move(colors), std::move(tangents),
-                                  std::move(bitangents));
+                                  std::move(texCoords), std::move(normals), std::move(tangents), std::move(bitangents));
 }
 
 const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiTextureType type,
@@ -131,42 +124,30 @@ Material *AssetManager::processMaterial(aiMaterial *mat, const std::string &dire
     material = newMaterial.get();
 
     if(mat->GetTextureCount(aiTextureType_HEIGHT) > 0)
-        newMaterial->setNormalTexture(loadTexture(mat, directory, aiTextureType_HEIGHT, m_textureManager.get()));
-
-    if(mat->GetTextureCount(aiTextureType_AMBIENT) > 0)
-        newMaterial->setKaTexture(loadTexture(mat, directory, aiTextureType_AMBIENT, m_textureManager.get()));
+        newMaterial->setNormalMap(loadTexture(mat, directory, aiTextureType_HEIGHT, m_textureManager.get()));
 
     if(mat->GetTextureCount(aiTextureType_DIFFUSE) > 0)
-        newMaterial->setKdTexture(loadTexture(mat, directory, aiTextureType_DIFFUSE, m_textureManager.get()));
+        newMaterial->setAlbedoMap(loadTexture(mat, directory, aiTextureType_DIFFUSE, m_textureManager.get()));
 
-    if(mat->GetTextureCount(aiTextureType_SPECULAR) > 0)
-        newMaterial->setKsTexture(loadTexture(mat, directory, aiTextureType_SPECULAR, m_textureManager.get()));
+    if(mat->GetTextureCount(aiTextureType_AMBIENT) > 0)
+        newMaterial->setMetalnessMap(loadTexture(mat, directory, aiTextureType_AMBIENT, m_textureManager.get()));
+
+    if(mat->GetTextureCount(aiTextureType_SHININESS) > 0)
+        newMaterial->setRoughnessMap(loadTexture(mat, directory, aiTextureType_SHININESS, m_textureManager.get()));
 
     if(mat->GetTextureCount(aiTextureType_OPACITY) > 0)
-        newMaterial->setAlphaTexture(loadTexture(mat, directory, aiTextureType_OPACITY, m_textureManager.get()));
+        newMaterial->setAlphaMap(loadTexture(mat, directory, aiTextureType_OPACITY, m_textureManager.get()));
 
 
     aiColor3D color;
-    if(mat->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
-        newMaterial->setKa({color.r, color.g, color.b});
     if(mat->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
-        newMaterial->setKd({color.r, color.g, color.b});
-    if(mat->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
-        newMaterial->setKs({color.r, color.g, color.b});
+        newMaterial->setAlbedo({color.r, color.g, color.b});
 
     float alpha;
     if(mat->Get(AI_MATKEY_OPACITY, alpha) == AI_SUCCESS)
         newMaterial->setAlpha(alpha);
 
-    float ns;
-    if(mat->Get(AI_MATKEY_SHININESS, ns) == AI_SUCCESS)
-        newMaterial->setNs(ns);
-
-    float nsStrength;
-    if(mat->Get(AI_MATKEY_SHININESS_STRENGTH, nsStrength) == AI_SUCCESS)
-        newMaterial->setNsStrength(nsStrength);
-
-    int twoSided;
+    bool twoSided;
     if(mat->Get(AI_MATKEY_TWOSIDED, twoSided) == AI_SUCCESS)
         newMaterial->setTwoSided(twoSided);
 

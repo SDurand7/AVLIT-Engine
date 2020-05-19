@@ -4,9 +4,7 @@ inline void OGLRenderSystem::setCurrentCamera(Camera *camera) {
     if(!m_camera) {
         m_GBuffer = OGLFramebuffer{{{GL_RGBA32F, GL_RGBA, GL_FLOAT},
                                     {GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE},
-                                    {GL_RGB, GL_RGB, GL_UNSIGNED_BYTE},
-                                    {GL_RGB, GL_RGB, GL_UNSIGNED_BYTE},
-                                    {GL_RG16F, GL_RG, GL_FLOAT}},
+                                    {GL_RG, GL_RGB, GL_UNSIGNED_BYTE}},
                                    static_cast<GLuint>(camera->width()),
                                    static_cast<GLuint>(camera->height()),
                                    5};

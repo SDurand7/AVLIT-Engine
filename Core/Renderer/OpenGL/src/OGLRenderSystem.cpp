@@ -301,12 +301,10 @@ void OGLRenderSystem::setupTextureUnits() {
 
     shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
     shader->bind();
-    m_GBuffer.setParameters("normalZ", shader, 5);
-    m_GBuffer.setParameters("ambientColor", shader, 6);
-    m_GBuffer.setParameters("diffuseColor", shader, 7);
-    m_GBuffer.setParameters("specularColor", shader, 8);
-    m_GBuffer.setParameters("specularParameter", shader, 9);
-    m_blurFBO.setParameters("occlusion", shader, 15);
+    m_GBuffer.setParameters("normalZMap", shader, 5);
+    m_GBuffer.setParameters("albedoMap", shader, 6);
+    m_GBuffer.setParameters("metalnessRoughnessMap", shader, 7);
+    m_blurFBO.setParameters("occlusionMap", shader, 15);
     m_shadowMap.setParameters("shadowMap", shader, 12);
 
     shader = m_shaderManager.shader(OGLShaderType::TONEMAPPING);
