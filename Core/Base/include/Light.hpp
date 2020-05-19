@@ -12,7 +12,7 @@ public:
 
     virtual ~Light() = default;
 
-    virtual void setParameters(int i, Shader *shader) const = 0;
+    virtual void setParameters(const std::string& name, Shader *shader) const = 0;
 
     virtual const Mat4 &projection() const = 0;
 
@@ -36,7 +36,7 @@ class PointLight : public Light {
 public:
     PointLight(const std::string &name, const Transform &transform, const Color3 &color);
 
-    void setParameters(int i, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 
@@ -49,7 +49,7 @@ class DirectionalLight : public Light {
 public:
     DirectionalLight(const std::string &name, const Transform &transform, const Color3 &color);
 
-    void setParameters(int i, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 
@@ -62,7 +62,7 @@ public:
     SpotLight(const std::string &name, const Transform &transform, const Color3 &color, float innerAngle,
               float outerAngle);
 
-    void setParameters(int i, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 
@@ -86,7 +86,7 @@ class AmbientLight : public Light {
 public:
     AmbientLight(const std::string &name, const Transform &transform, const Color3 &color);
 
-    void setParameters(int i, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader) const override;
 
     const Mat4 &projection() const override;
 

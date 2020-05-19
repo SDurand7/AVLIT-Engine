@@ -20,14 +20,14 @@ Engine::Engine() {
 
 void Engine::createInstance() {
     if(m_instance) {
-        LOG("[WARNING]: Engine already created");
+        AVLIT_LOG("[WARNING]: Engine already created");
     } else {
         m_instance = new Engine();
     }
 }
 Engine *Engine::instance() {
     if(!m_instance) {
-        LOG("[OOPS]: Engine was never initialiazed, segfault incoming");
+        AVLIT_LOG("[OOPS]: Engine was never initialiazed, segfault incoming");
     }
     return m_instance;
 }

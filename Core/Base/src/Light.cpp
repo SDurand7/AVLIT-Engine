@@ -11,7 +11,7 @@ const float nearZ = 0.1f;
 
 /// Light base class
 Light::Light(const std::string &name, const Transform &transform, const Color3 &color)
-    : SceneObject{name, transform}, m_color{color} {
+    : SceneObject(name, transform), m_color(color) {
     m_transform[0] = normalize(m_transform[0]);
     m_transform[1] = normalize(m_transform[1]);
     m_transform[2] = normalize(m_transform[2]);
@@ -25,12 +25,10 @@ const Mat4 PointLight::m_projection = perspective(pi() / 2, 1.f, nearZ, maxRange
 PointLight::PointLight(const std::string &name, const Transform &transform, const Color3 &color)
     : Light{name, transform, color} {}
 
-void PointLight::setParameters(int i, Shader *shader) const {
-    shader->setUniform(i, static_cast<uint>(LightType::POINT_LIGHT));
-    shader->setUniform(i + 1, m_color);
-    shader->setUniform(i + 2, m_transform[3]);
-    shader->setUniform(i + 7, nearZ);
-    shader->setUniform(i + 8, maxRange);
+void PointLight::setParameters(const std::string &name, Shader *shader) const {
+    shader->setUniform(name + ".type", (uint)LightType::POINT_LIGHT);
+    shader->setUniform(name + ".color", m_color);
+    shader->setUniform(name + ".position", m_transform[3]);
 }
 
 const Mat4 &PointLight::projection() const { return m_projection; }
@@ -42,10 +40,10 @@ const Mat4 DirectionalLight::m_projection = ortho(-85.f, 85.f, -85.f, 100.f, -80
 DirectionalLight::DirectionalLight(const std::string &name, const Transform &transform, const Color3 &color)
     : Light{name, transform, color} {}
 
-void DirectionalLight::setParameters(int i, Shader *shader) const {
-    shader->setUniform(i, static_cast<uint>(LightType::DIRECTIONAL_LIGHT));
-    shader->setUniform(i + 1, m_color);
-    shader->setUniform(i + 3, -m_transform[2]);
+void DirectionalLight::setParameters(const std::string &name, Shader *shader) const {
+    shader->setUniform(name + ".type", static_cast<uint>(LightType::DIRECTIONAL_LIGHT));
+    shader->setUniform(name + ".color", m_color);
+    shader->setUniform(name + ".direction", -m_transform[2]);
 }
 
 const Mat4 &DirectionalLight::projection() const { return m_projection; }
@@ -59,15 +57,13 @@ SpotLight::SpotLight(const std::string &name, const Transform &transform, const 
                      float outerAngle)
     : Light{name, transform, color}, m_cosInnerAngle{cos(innerAngle)}, m_cosOuterAngle{cos(outerAngle)} {}
 
-void SpotLight::setParameters(int i, Shader *shader) const {
-    shader->setUniform(i, static_cast<uint>(LightType::SPOT_LIGHT));
-    shader->setUniform(i + 1, m_color);
-    shader->setUniform(i + 2, m_transform[3]);
-    shader->setUniform(i + 3, -m_transform[2]);
-    shader->setUniform(i + 5, m_cosInnerAngle);
-    shader->setUniform(i + 6, m_cosOuterAngle);
-    shader->setUniform(i + 7, nearZ);
-    shader->setUniform(i + 8, maxRange);
+void SpotLight::setParameters(const std::string &name, Shader *shader) const {
+    shader->setUniform(name + ".type", static_cast<uint>(LightType::SPOT_LIGHT));
+    shader->setUniform(name + ".color", m_color);
+    shader->setUniform(name + ".position", m_transform[3]);
+    shader->setUniform(name + ".direction", -m_transform[2]);
+    shader->setUniform(name + ".cosInnerAngle", m_cosInnerAngle);
+    shader->setUniform(name + ".cosOuterAngle", m_cosOuterAngle);
 }
 
 const Mat4 &SpotLight::projection() const { return m_projection; }
@@ -87,9 +83,9 @@ const Mat4 AmbientLight::m_projection = Mat4{};
 AmbientLight::AmbientLight(const std::string &name, const Transform &transform, const Color3 &color)
     : Light{name, transform, color} {}
 
-void AmbientLight::setParameters(int i, Shader *shader) const {
-    shader->setUniform(i, static_cast<uint>(LightType::AMBIENT_LIGHT));
-    shader->setUniform(i + 1, m_color);
+void AmbientLight::setParameters(const std::string &name, Shader *shader) const {
+    shader->setUniform(name + ".type", static_cast<uint>(LightType::AMBIENT_LIGHT));
+    shader->setUniform(name + ".color", m_color);
 }
 
 const Mat4 &AmbientLight::projection() const { return m_projection; }

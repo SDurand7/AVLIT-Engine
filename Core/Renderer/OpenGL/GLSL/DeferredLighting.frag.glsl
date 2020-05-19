@@ -16,17 +16,15 @@ uniform sampler2D specularParameter;
 uniform sampler2D occlusion;
 
 uniform sampler2DShadow shadowMap;
-// Debug stuff
-uniform sampler2D depthMap;
 
 uniform samplerCube skybox;
 
 uniform mat4 lightVP;
 
 uniform mat4 inverseView;
-uniform mat4 inverseProj;
+uniform mat4 inverseProjection;
 
-uniform Light l;
+uniform Light light;
 
 
 vec3 computeDiffuse(vec3 lightV, vec3 position, vec3 normal) {
@@ -62,21 +60,21 @@ float shadow(vec4 position, vec3 normal, vec3 lightV) {
 void main() {
     float alpha = texture(ambientColor, textureCoord).a;
 
-    if(l.type == AMBIENT_LIGHT) {
+    if(light.type == AMBIENT_LIGHT) {
         outFragColor =
-            vec4(texture(occlusion, textureCoord).x * l.color * texture(ambientColor, textureCoord).xyz, alpha);
+            vec4(texture(occlusion, textureCoord).x * light.color * texture(ambientColor, textureCoord).xyz, alpha);
     } else {
         vec3 normal = texture(normalZ, textureCoord).xyz;
         float z = texture(normalZ, textureCoord).w;
-        vec4 dir = inverseProj * vec4(2.f * textureCoord - 1.f, 0.f, 1.f);
+        vec4 dir = inverseProjection * vec4(2.f * textureCoord - 1.f, 0.f, 1.f);
         dir /= dir.w;
         dir /= dir.z;
         vec3 position = (inverseView * vec4(z * dir.xyz, 1.f)).xyz;
 
-        vec3 lightV = lightVector(l, position.xyz);
+        vec3 lightV = lightVector(light, position.xyz);
 
         outFragColor =
-            vec4(shadow(vec4(position, 1.f), normal, lightV) * attenuation(l, lightV, position.xyz) * l.color *
+            vec4(shadow(vec4(position, 1.f), normal, lightV) * attenuation(light, lightV, position.xyz) * light.color *
                      (computeDiffuse(lightV, position.xyz, normal) + computeSpecular(lightV, position.xyz, normal)),
                  alpha);
     }

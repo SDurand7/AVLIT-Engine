@@ -21,13 +21,16 @@ enum class OGLShaderType {
     TONEMAPPING = 4,
     SSAO = 5,
     BLUR = 6,
-    DEBUG = 7
+    COUNT = 7
 };
+
+using OGLShaderSources = std::vector<std::pair<OGLShaderType, OGLShaderStageFiles>>;
 
 class OGLShaderManager {
 public:
     OGLShaderManager() = default;
-    OGLShaderManager(const std::vector<std::pair<std::string, std::string>> &sourceFiles);
+
+    OGLShaderManager(const OGLShaderSources &sources);
 
     inline OGLShader *shader(OGLShaderType type);
 

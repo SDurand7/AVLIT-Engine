@@ -16,7 +16,7 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
                                  const SceneBVHNode *graphRoot)
     : m_drawables{drawables}, m_lights{lights}, m_graphRoot{graphRoot} {
     if(!gladLoadGL()) {
-        LOG("[ERROR]: GLAD could not load OpenGL's functions");
+        AVLIT_LOG("[ERROR]: GLAD could not load OpenGL's functions");
     }
 
     glEnable(GL_DEPTH_TEST);
@@ -34,14 +34,22 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
 }
 
 void OGLRenderSystem::reloadShaders() {
-    m_shaderManager = OGLShaderManager{{{"GBuffer.vert.glsl", "GBuffer.frag.glsl"},
-                                        {"DeferredLighting.vert.glsl", "DeferredLighting.frag.glsl"},
-                                        {"ShadowMapping.vert.glsl", "ShadowMapping.frag.glsl"},
-                                        {"Skybox.vert.glsl", "Skybox.frag.glsl"},
-                                        {"Tonemapping.vert.glsl", "Tonemapping.frag.glsl"},
-                                        {"SSAO.vert.glsl", "SSAO.frag.glsl"},
-                                        {"Blur.vert.glsl", "Blur.frag.glsl"},
-                                        {"Debug.vert.glsl", "Debug.frag.glsl"}}};
+    m_shaderManager = OGLShaderManager(
+        {{OGLShaderType::GBUFFER,
+          {{OGLShaderStage::VERTEX, "GBuffer.vert.glsl"}, {OGLShaderStage::FRAGMENT, "GBuffer.frag.glsl"}}},
+         {OGLShaderType::DEFERRED_LIGHTING,
+          {{OGLShaderStage::VERTEX, "DeferredLighting.vert.glsl"},
+           {OGLShaderStage::FRAGMENT, "DeferredLighting.frag.glsl"}}},
+         {OGLShaderType::SHADOW_MAPPING,
+          {{OGLShaderStage::VERTEX, "ShadowMapping.vert.glsl"}, {OGLShaderStage::FRAGMENT, "ShadowMapping.frag.glsl"}}},
+         {OGLShaderType::SKYBOX,
+          {{OGLShaderStage::VERTEX, "Skybox.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Skybox.frag.glsl"}}},
+         {OGLShaderType::TONEMAPPING,
+          {{OGLShaderStage::VERTEX, "Tonemapping.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Tonemapping.frag.glsl"}}},
+         {OGLShaderType::SSAO,
+          {{OGLShaderStage::VERTEX, "SSAO.vert.glsl"}, {OGLShaderStage::FRAGMENT, "SSAO.frag.glsl"}}},
+         {OGLShaderType::BLUR,
+          {{OGLShaderStage::VERTEX, "Blur.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Blur.frag.glsl"}}}});
 
     if(m_camera) {
         setupTextureUnits();
@@ -78,15 +86,17 @@ void OGLRenderSystem::gbufferPass() {
     for(const auto &drawable : m_drawables) {
         AABB aabb = drawable->aabb();
         aabb.applyTransform(m_camera->view());
+
         if(drawable->isVisible() && inFrustum(aabb, m_camera->projection())) {
             Mat4 modelView = m_camera->view() * Mat4{drawable->transform()};
-            shader->setUniform(0, m_camera->projection());
-            shader->setUniform(1, modelView);
-            shader->setUniform(2, drawable->transform());
+            shader->setUniform("projection", m_camera->projection());
+            shader->setUniform("modelView", modelView);
+            shader->setUniform("model", drawable->transform());
+
             const auto model = drawable->model();
             for(const auto &meshByMaterial : model->meshesByMaterial()) {
                 meshByMaterial.first->isTwoSided() ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
-                meshByMaterial.first->setParameters(3, shader);
+                meshByMaterial.first->setParameters("material", shader);
                 for(const auto mesh : meshByMaterial.second) {
                     aabb = mesh->aabb();
                     aabb.applyTransform(modelView);
@@ -109,12 +119,12 @@ void OGLRenderSystem::ssaoPass() {
     glDisable(GL_DEPTH_TEST);
     m_quadVAO.bind();
 
-    shader->setUniform(2, m_camera->view());
-    shader->setUniform(3, m_camera->projection());
-    shader->setUniform(4, m_camera->inverseProjection());
+    shader->setUniform("view", m_camera->view());
+    shader->setUniform("projection", m_camera->projection());
+    shader->setUniform("inverseProjection", m_camera->inverseProjection());
 
-    shader->setUniform(5, m_camera->width());
-    shader->setUniform(6, m_camera->height());
+    shader->setUniform("width", m_camera->width());
+    shader->setUniform("height", m_camera->height());
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
@@ -130,19 +140,19 @@ void OGLRenderSystem::ssaoBlurPass() {
 void OGLRenderSystem::lightingPass() {
     auto shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
     shader->bind();
-    shader->setUniform(10, m_camera->transform());
-    shader->setUniform(11, m_camera->inverseProjection());
+    shader->setUniform("inverseView", m_camera->transform());
+    shader->setUniform("inverseProjection", m_camera->inverseProjection());
     m_shadowMap.bindBuffer(12, 0, 0);
     m_shadowMap.bindBuffer(13, 1, 0);
 
     if(m_skybox.hasTexture())
-        m_skybox.bind(8, shader, 0);
+        m_skybox.bind("skybox", shader, 0);
 
     // Ambient light
     m_hdrFBO.bind();
     glClear(GL_COLOR_BUFFER_BIT);
     m_quadVAO.bind();
-    m_lights[0]->setParameters(12, shader);
+    m_lights[0]->setParameters("light", shader);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glEnable(GL_DEPTH_TEST);
     auto shadowMapSize = m_shadowMap.size();
@@ -183,8 +193,8 @@ void OGLRenderSystem::skyboxPass() {
 
         Mat4 skyboxView = m_camera->view();
         skyboxView[3] = {0.f, 0.f, 0.f, 1.f};
-        shader->setUniform(0, m_camera->projection() * skyboxView);
-        m_skybox.bind(1, shader, 0);
+        shader->setUniform("viewProjection", m_camera->projection() * skyboxView);
+        m_skybox.bind("skybox", shader, 0);
 
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
         glDepthMask(GL_TRUE);
@@ -193,11 +203,11 @@ void OGLRenderSystem::skyboxPass() {
 
 void OGLRenderSystem::drawLight(Light *light) {
     auto shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
-    m_hdrFBO.bind();
     shader->bind();
-    shader->setUniform(9, light->projection() * light->view());
+    m_hdrFBO.bind();
+    shader->setUniform("lightVP", light->projection() * light->view());
     m_quadVAO.bind();
-    light->setParameters(12, shader);
+    light->setParameters("light", shader);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
@@ -211,7 +221,7 @@ void OGLRenderSystem::drawShadowMap(Light *light) {
         aabb.applyTransform(light->view());
         if(drawable->isVisible() && inFrustum(aabb, light->projection())) {
             Mat4 modelView = light->view() * Mat4{drawable->transform()};
-            shader->setUniform(0, light->projection() * modelView);
+            shader->setUniform("mvp", light->projection() * modelView);
             const auto model = drawable->model();
             for(const auto &meshByMaterial : model->meshesByMaterial()) {
                 for(const auto mesh : meshByMaterial.second) {
@@ -268,8 +278,8 @@ bool OGLRenderSystem::inFrustum(const AABB &aabb, const Mat4 &projection) const 
 void OGLRenderSystem::setupTextureUnits() {
     auto shader = m_shaderManager.shader(OGLShaderType::SSAO);
     shader->bind();
-    m_GBuffer.setParameters(0, shader, 5);
-    m_ssaoFBO.setParameters(1, shader, 10);
+    m_GBuffer.setParameters("normalZ", shader, 5);
+    m_ssaoFBO.setParameters("noise", shader, 10);
 
     std::default_random_engine gen;
     std::uniform_real_distribution<float> distribution1{-1.f, 1.f};
@@ -282,27 +292,26 @@ void OGLRenderSystem::setupTextureUnits() {
         scale = 0.1f * (1 - scaleSquared) + 1.0f * scaleSquared;
         sample = scale * normalize(sample);
 
-        shader->setUniform(7 + i, sample);
+        shader->setUniform("samples[" + std::to_string(i) + "]", sample);
     }
 
     shader = m_shaderManager.shader(OGLShaderType::BLUR);
     shader->bind();
-    m_ssaoFBO.setParameters(0, shader, 11);
+    m_ssaoFBO.setParameters("toBlur", shader, 11);
 
     shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
     shader->bind();
-    m_GBuffer.setParameters(0, shader, 5);
-    m_GBuffer.setParameters(1, shader, 6);
-    m_GBuffer.setParameters(2, shader, 7);
-    m_GBuffer.setParameters(3, shader, 8);
-    m_GBuffer.setParameters(4, shader, 9);
-    m_blurFBO.setParameters(5, shader, 15);
-    m_shadowMap.setParameters(6, shader, 12);
-    m_shadowMap.setParameters(7, shader, 13);
+    m_GBuffer.setParameters("normalZ", shader, 5);
+    m_GBuffer.setParameters("ambientColor", shader, 6);
+    m_GBuffer.setParameters("diffuseColor", shader, 7);
+    m_GBuffer.setParameters("specularColor", shader, 8);
+    m_GBuffer.setParameters("specularParameter", shader, 9);
+    m_blurFBO.setParameters("occlusion", shader, 15);
+    m_shadowMap.setParameters("shadowMap", shader, 12);
 
     shader = m_shaderManager.shader(OGLShaderType::TONEMAPPING);
     shader->bind();
-    m_hdrFBO.setParameters(0, shader, 14);
+    m_hdrFBO.setParameters("hdrColor", shader, 14);
 }
 
 } // namespace AVLIT

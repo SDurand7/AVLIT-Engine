@@ -3,10 +3,10 @@
 
 namespace AVLIT {
 
-OGLShaderManager::OGLShaderManager(const std::vector<std::pair<std::string, std::string>> &sourceFiles) {
-    m_shaders.reserve(sourceFiles.size());
-    for(const auto &file : sourceFiles) {
-        m_shaders.emplace_back(OGLShader::prefix + file.first, OGLShader::prefix + file.second);
+OGLShaderManager::OGLShaderManager(const OGLShaderSources &sources)
+    : m_shaders(static_cast<int>(OGLShaderType::COUNT)) {
+    for(const auto &source : sources) {
+        m_shaders[static_cast<int>(source.first)] = Shader(source.second);
     }
 }
 

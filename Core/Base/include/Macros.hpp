@@ -1,20 +1,22 @@
 #pragma once
 
+#include <iostream>
+
 
 /// Debug macros
 #ifdef AVLIT_DEBUG
 #include <cassert>
-#include <iostream>
 #include <string>
 #include <chrono>
 
 static std::chrono::steady_clock::time_point start;
 
-#define ALIT_ASSERT(test, msg)                                                                                         \
+#define AVLIT_ASSERT(test, msg)                                                                                         \
     if(!test)                                                                                                          \
-        LOG(msg);                                                                                                      \
+        AVLIT_LOG(msg);                                                                                                      \
     assert(test)
-#define LOG(msg) (std::cerr << msg << std::endl)
+#define AVLIT_LOG(msg) (std::cout << "[LOG]: " << msg << std::endl)
+#define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << std::endl)
 #define STR(v) std::to_string(v)
 #define VEC_STR(v) (STR(v.x) + " " + STR(v.y) + " " + STR(v.z) + " ")
 
@@ -55,7 +57,8 @@ static std::chrono::steady_clock::time_point start;
 // clang-format on
 
 #define AVLIT_ASSERT(test, msg) NONE
-#define LOG(msg) NONE
+#define AVLIT_LOG(msg) NONE
+#define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << std::endl)
 #define STR(v) NONE
 #define VEC_STR(v) NONE
 

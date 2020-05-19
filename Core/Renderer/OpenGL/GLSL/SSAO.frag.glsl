@@ -10,7 +10,7 @@ uniform sampler2D noise;
 
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 inverseProj;
+uniform mat4 inverseProjection;
 
 uniform int width;
 uniform int height;
@@ -29,7 +29,7 @@ void main() {
     mat3 tbn = mat3(tangent, cross(normal, tangent), normal);
 
     float z = texture(normalZ, textureCoord).w;
-    vec4 dir = inverseProj * vec4(2.f * textureCoord - 1.f, 0.f, 1.f);
+    vec4 dir = inverseProjection * vec4(2.f * textureCoord - 1.f, 0.f, 1.f);
     dir /= dir.w;
     dir /= dir.z;
     vec3 position = z * dir.xyz;

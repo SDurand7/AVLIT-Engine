@@ -16,25 +16,7 @@ struct Light {
     vec3 direction;
     float cosInnerAngle;
     float cosOuterAngle;
-
-    float nearZ;
-    float farZ;
 };
-
-float linearizeDepth(float near, float far, float z) {
-    z = 2.f * z - 1.f;
-    return near / (far - z * (far - near));
-}
-
-float linearizeDepth(Light l, float z) {
-    switch(l.type) {
-    case POINT_LIGHT:
-    case SPOT_LIGHT:
-        return linearizeDepth(l.nearZ, l.farZ, z);
-    default:
-        return z;
-    }
-}
 
 vec3 lightVector(Light l, vec3 position) {
     switch(l.type) {

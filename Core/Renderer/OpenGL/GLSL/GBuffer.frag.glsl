@@ -37,23 +37,24 @@ struct Material {
 };
 
 
-uniform Material m;
+uniform Material material;
 
 
 void main() {
-    float alpha = m.hasAlphaTexture ? texture(m.alphaTexture, textureCoord).x : m.alpha;
+    float alpha = material.hasAlphaTexture ? texture(material.alphaTexture, textureCoord).x : material.alpha;
 
     if(alpha < 0.25)
         discard;
 
-    outNormalZ = vec4(m.hasNormalTexture
-                          ? mat3(tangent, bitangent, normal) * (2.0 * texture(m.normalTexture, textureCoord).xyz - 1.0)
-                          : normal,
+    outNormalZ = vec4(material.hasNormalTexture ? mat3(tangent, bitangent, normal) *
+                                                      (2.0 * texture(material.normalTexture, textureCoord).xyz - 1.0)
+                                                : normal,
                       viewZ);
-    outAmbientColor = vec4(m.hasKaTexture ? texture(m.kaTexture, textureCoord).xyz
-                                          : (m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz : m.ka),
+    outAmbientColor = vec4(material.hasKaTexture
+                               ? texture(material.kaTexture, textureCoord).xyz
+                               : (material.hasKdTexture ? texture(material.kdTexture, textureCoord).xyz : material.ka),
                            alpha);
-    outDiffuseColor = m.hasKdTexture ? texture(m.kdTexture, textureCoord).xyz : m.kd;
-    outSpecularColor = m.hasKsTexture ? texture(m.ksTexture, textureCoord).xyz : m.ks;
-    outSpecularParameters = vec2(m.ns, m.nsStrength);
+    outDiffuseColor = material.hasKdTexture ? texture(material.kdTexture, textureCoord).xyz : material.kd;
+    outSpecularColor = material.hasKsTexture ? texture(material.ksTexture, textureCoord).xyz : material.ks;
+    outSpecularParameters = vec2(material.ns, material.nsStrength);
 }

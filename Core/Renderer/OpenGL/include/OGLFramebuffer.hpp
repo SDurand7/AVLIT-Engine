@@ -41,8 +41,7 @@ public:
 
     inline void bindBuffer(int i, int sampler, int texture) const;
 
-    // @brief Binds the textures of the frame buffer to the i-th (and following) uniforms
-    inline void setParameters(int i, OGLShader *shader, int unitID) const;
+    inline void setParameters(const std::string& name, OGLShader *shader, GLint unitID) const;
 
     // Necessary for Qt compatibility
     inline static void saveDefault();
@@ -57,12 +56,19 @@ public:
 
 private:
     GLuint m_fboID = 0;
+
     GLuint m_rboID = 0;
+
     GLuint m_firstToResize = 0;
+
     static GLint m_defaultID;
+
     std::vector<GLuint> m_textures;
+
     std::vector<GLuint> m_samplers;
+
     std::vector<std::tuple<GLint, GLenum, GLenum>> m_buffersInfos;
+
     std::pair<GLuint, GLuint> m_size;
 };
 

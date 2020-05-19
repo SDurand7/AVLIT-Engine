@@ -20,7 +20,7 @@ inline void OGLFramebuffer::bindBuffer(int i, int sampler, int texture) const {
     glBindSampler(i, m_samplers[sampler]);
 }
 
-inline void OGLFramebuffer::setParameters(int i, OGLShader *shader, int unitID) const { shader->setUniform(i, unitID); }
+inline void OGLFramebuffer::setParameters(const std::string&name, OGLShader *shader, GLint unitID) const { shader->setUniform(name, unitID); }
 
 inline void OGLFramebuffer::saveDefault() { glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_defaultID); }
 

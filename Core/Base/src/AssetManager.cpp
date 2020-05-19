@@ -32,7 +32,7 @@ std::string AssetManager::loadAssetFromFile(const std::string &filepath, const M
                                         aiProcess_OptimizeMeshes | aiProcess_GenNormals | aiProcess_GenUVCoords);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-        LOG("[ERROR]: Assimp failed to load \"" + filepath + "\" with the following: " + importer.GetErrorString());
+        AVLIT_LOG("[ERROR]: Assimp failed to load \"" + filepath + "\" with the following: " + importer.GetErrorString());
         return name;
     }
 
@@ -186,7 +186,7 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
     int width, height, intFormat;
     uchar *data = stbi_load(fullpath.c_str(), &width, &height, &intFormat, 0);
     if(!data) {
-        LOG("[ERROR]: error loading texture data from " + fullpath);
+        AVLIT_LOG("[ERROR]: error loading texture data from " + fullpath);
     } else {
         InternalFormat internalFormat;
         Format format;
@@ -213,7 +213,7 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
                 internalFormat = InternalFormat::RGBA;
             break;
         default:
-            LOG("[ERROR]: unsupported texture format");
+            AVLIT_LOG("[ERROR]: unsupported texture format");
             stbi_image_free(data);
             return nullptr;
         }

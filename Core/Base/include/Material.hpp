@@ -14,20 +14,28 @@ public:
 
     inline bool isTwoSided() const;
 
-    inline void setParameters(int i, Shader *shader) const;
+    inline void setParameters(const std::string &name, Shader *shader) const;
 
-    // TODO: replace all those setters by a setter for each type and a flag (?)
     void setKa(Color3 ka);
+
     void setKd(Color3 kd);
+
     void setKs(Color3 ks);
+
     void setNs(float ns);
+
     void setNsStrength(float nsStrength);
+
     void setAlpha(float alpha);
 
     void setNormalTexture(const Texture *normalTexture);
+
     void setKaTexture(const Texture *kaTexture);
+
     void setKdTexture(const Texture *kdTexture);
+
     void setKsTexture(const Texture *ksTexture);
+
     void setAlphaTexture(const Texture *alphaTexture);
 
     void setTwoSided(bool twoSided);

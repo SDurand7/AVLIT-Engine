@@ -22,7 +22,7 @@ public:
 
     void operator=(OGLSkybox &&skybox);
 
-    inline void bind(int i, OGLShader *prog, GLuint textureUnit) const;
+    inline void bind(const std::string &name, OGLShader *prog, GLuint textureUnit) const;
 
     inline bool hasTexture() const;
 

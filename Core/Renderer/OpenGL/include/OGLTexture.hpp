@@ -22,7 +22,8 @@ public:
 
     ~OGLTexture();
 
-    inline void bind(int i, Shader *shader, int textureUnit, GLenum textureType = GL_TEXTURE_2D) const;
+    inline void bind(const std::string &name, Shader *shader, GLint textureUnit,
+                     GLenum textureType = GL_TEXTURE_2D) const;
 
 private:
     GLuint m_textureID;

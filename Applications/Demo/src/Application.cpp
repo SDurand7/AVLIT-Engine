@@ -13,25 +13,26 @@ const float Application::m_defaultFovy = 1.2f;
 
 Application::Application(int width, int height)
     : m_scene(AVLIT::Engine::instance()->scene()), m_width(width), m_height(height) {
-    AVLIT::Transform transform(1.f);
-    transform[3] = AVLIT::Vec3(0.f, 0.f, 5.f);
+    AVLIT::Transform transform{1.f};
+    transform[3] = {0.f, 6.f, 0.f};
     m_camera = static_cast<AVLIT::Camera *>(addCamera("Main camera", transform)->sceneObject());
     m_scene->setCurrentCamera(m_camera);
     m_scene->setAmbientColor({0.06f, 0.04f, 0.03f});
 
     // Setup debug meshes
-    std::string directory = AVLIT_ROOT "/Assets/";
+    std::string directory = AVLIT_ROOT "Assets/";
 
     std::string name = loadModel(directory + "Sponza/sponza.obj");
     setSkybox({directory + "Skybox/right.jpg", directory + "Skybox/left.jpg", directory + "Skybox/top.jpg",
                directory + "Skybox/bottom.jpg", directory + "Skybox/front.jpg", directory + "Skybox/back.jpg"});
 
-    addDrawable(name, AVLIT::Transform(0.05f));
-    addLight(AVLIT::LightType::DIRECTIONAL_LIGHT, AVLIT::rotate({1.f, 0.f, 0.f}, -AVLIT::pi() / 3), {0.8f, 0.65f, 0.42f});
+    addDrawable(name, AVLIT::Transform(0.04f));
+    addLight(AVLIT::LightType::DIRECTIONAL_LIGHT, AVLIT::rotate({1.f, 0.f, 0.f}, -AVLIT::pi() / 3),
+             {0.8f, 0.7f, 0.65f});
 
-    transform = AVLIT::rotate({0.f, 1.f, 0.f}, AVLIT::pi() / 2);
-    transform[3] += AVLIT::Vec3(-45.f, 4.f, -1.f);
-    addLight(AVLIT::LightType::SPOT_LIGHT, transform, {8.f, 6.f, 4.5f});
+    transform = AVLIT::rotate({0.f, 4.f, 0.f}, AVLIT::pi() / 2);
+    transform[3] += AVLIT::Vec3(-40.f, 6.f, -1.5f);
+    addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f});
 }
 
 void Application::resize(int width, int height) {
@@ -64,7 +65,7 @@ AVLIT::SceneBVHNode *Application::addDrawable(const std::string &name, const AVL
 }
 
 AVLIT::SceneBVHNode *Application::addLight(AVLIT::LightType type, const AVLIT::Transform &transform,
-                                          const AVLIT::Color3 &color) {
+                                           const AVLIT::Color3 &color) {
     std::string name = (type == AVLIT::LightType::DIRECTIONAL_LIGHT
                             ? "New directional light"
                             : (type == AVLIT::LightType::SPOT_LIGHT ? "New spot light" : "New point light"));

@@ -15,15 +15,15 @@ layout(location = 4) out vec3 bitangent;
 layout(location = 5) out float viewZ;
 
 
-uniform mat4 p;
-uniform mat4 mv;
+uniform mat4 projection;
+uniform mat4 modelView;
 uniform mat4 model;
 
 
 void main() {
-    gl_Position = mv * vec4(inPosition, 1.f);
+    gl_Position = modelView * vec4(inPosition, 1.f);
     viewZ = gl_Position.z;
-    gl_Position = p * gl_Position;
+    gl_Position = projection * gl_Position;
 
     textureCoord = inTextureCoord;
     color = inColor;
