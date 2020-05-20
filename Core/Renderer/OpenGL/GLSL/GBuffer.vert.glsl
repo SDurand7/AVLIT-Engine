@@ -24,8 +24,8 @@ void main() {
     // Incorrect for non uniform scaling
     vec3 normal = normalize(vec3(model * vec4(inNormal, 0.f)));
 
+    // Pack the normal into the other buffers
     texCoordViewZNormalX = vec4(inTexCoord, viewZ, normal.x);
     tangentNormalY = vec4(normalize(vec3(model * vec4(inTangent, 0.f))), normal.y);
     bitangentNormalZ = vec4(normalize(vec3(model * vec4(inBitangent, 0.f))), normal.z);
-    // tangentNormalY = vec4(normalize(cross(bitangentNormalZ.xyz, normal)), normal.y);
 }

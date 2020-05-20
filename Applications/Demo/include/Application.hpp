@@ -20,7 +20,7 @@ public:
 
     void rotateCamera(int dx, int dy);
 
-    void useEditorCamera();
+    void switchLightState();
 
     AVLIT::SceneBVHNode *addCamera(const std::string &name, const AVLIT::Transform &transform) const;
 
@@ -56,6 +56,7 @@ public:
 private:
     AVLIT::Scene *m_scene;
     AVLIT::Camera *m_camera;
+    AVLIT::Light *m_light;
 
     // Used to create new cameras
     static const float m_defaultFovy;

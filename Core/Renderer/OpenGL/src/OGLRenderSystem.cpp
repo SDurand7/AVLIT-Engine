@@ -31,6 +31,7 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
 
     m_quadVAO = OGLVAO{
         Mesh{nullptr, {0, 1, 2, 0, 3, 1}, {{-1.f, -1.f, 0.f}, {1.f, 1.f, 0.f}, {-1.f, 1.f, 0.f}, {1.f, -1.f, 0.f}}}};
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::reloadShaders() {
@@ -54,6 +55,10 @@ void OGLRenderSystem::reloadShaders() {
     if(m_camera) {
         setupTextureUnits();
     }
+
+    GL_CHECK_ERROR();
+
+    AVLIT_LOG("Shaders reload complete");
 }
 
 /// Deferred shading
@@ -73,6 +78,7 @@ void OGLRenderSystem::render() {
 
         OGLVAO::unbindAll();
     }
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::gbufferPass() {
@@ -144,9 +150,6 @@ void OGLRenderSystem::lightingPass() {
     shader->setUniform("inverseProjection", m_camera->inverseProjection());
     m_shadowMap.bindBuffer(12, 0, 0);
     m_shadowMap.bindBuffer(13, 1, 0);
-
-    if(m_skybox.hasTexture())
-        m_skybox.bind("skybox", shader, 0);
 
     // Ambient light
     m_hdrFBO.bind();

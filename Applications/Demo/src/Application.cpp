@@ -17,7 +17,9 @@ Application::Application(int width, int height)
     transform[3] = {0.f, 6.f, 0.f};
     m_camera = static_cast<AVLIT::Camera *>(addCamera("Main camera", transform)->sceneObject());
     m_scene->setCurrentCamera(m_camera);
-    m_scene->setAmbientColor({0.06f, 0.04f, 0.03f});
+    m_scene->setAmbientColor({0.015f, 0.012f, 0.009f});
+    m_light = static_cast<AVLIT::Light *>(
+        addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f})->sceneObject());
 
     // Setup debug meshes
     std::string directory = AVLIT_ROOT "Assets/";
@@ -26,13 +28,13 @@ Application::Application(int width, int height)
     setSkybox({directory + "Skybox/right.jpg", directory + "Skybox/left.jpg", directory + "Skybox/top.jpg",
                directory + "Skybox/bottom.jpg", directory + "Skybox/front.jpg", directory + "Skybox/back.jpg"});
 
-    addDrawable(name, AVLIT::Transform(0.04f));
-    addLight(AVLIT::LightType::DIRECTIONAL_LIGHT, AVLIT::rotate({1.f, 0.f, 0.f}, -AVLIT::pi() / 3),
+    addDrawable(name, AVLIT::Transform{0.04f});
+    addLight(AVLIT::LightType::DIRECTIONAL_LIGHT, AVLIT::rotate({1.f, 0.f, 0.f}, -AVLIT::pi() / 3.f),
              {0.8f, 0.7f, 0.65f});
 
-    transform = AVLIT::rotate({0.f, 4.f, 0.f}, AVLIT::pi() / 2);
-    transform[3] += AVLIT::Vec3(-40.f, 6.f, -1.5f);
-    addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f});
+     transform = AVLIT::rotate({0.f, 4.f, 0.f}, AVLIT::pi() / 2);
+     transform[3] += AVLIT::Vec3(-40.f, 6.f, -1.5f);
+     addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f});
 }
 
 void Application::resize(int width, int height) {
@@ -43,17 +45,30 @@ void Application::resize(int width, int height) {
     m_camera->setHeight(height);
 }
 
-void Application::translateCameraFront(float distance) { m_camera->translate(-distance * m_camera->front()); }
+void Application::translateCameraFront(float distance) {
+    AVLIT::Vec3 translation{-distance * m_camera->front()};
 
-void Application::translateCameraRight(float distance) { m_camera->translate(distance * m_camera->right()); }
+    m_camera->translate(translation);
+    m_light->translate(translation);
+}
+
+void Application::translateCameraRight(float distance) {
+    AVLIT::Vec3 translation{distance * m_camera->right()};
+
+    m_camera->translate(translation);
+    m_light->translate(translation);
+}
 
 void Application::rotateCamera(int dx, int dy) {
     float angleX = static_cast<float>(dx) / m_width * m_camera->fovx();
     float angleY = static_cast<float>(dy) / m_height * m_camera->fovy();
 
-    m_camera->rotate(AVLIT::rotate(AVLIT::Vec3(0.f, 1.f, 0.f), angleX) * AVLIT::rotate(m_camera->right(), angleY),
-                     m_camera->position());
+    AVLIT::Mat3 rotation{AVLIT::rotate(AVLIT::Vec3(0.f, 1.f, 0.f), angleX) * AVLIT::rotate(m_camera->right(), angleY)};
+    m_camera->rotate(rotation, m_camera->position());
+    m_light->rotate(rotation, m_camera->position());
 }
+
+void Application::switchLightState() { m_light->switchState(); }
 
 AVLIT::SceneBVHNode *Application::addCamera(const std::string &name, const AVLIT::Transform &transform) const {
     return m_scene->addCamera(m_scene->graphRoot(), name, transform, m_width, m_height, m_defaultFovy);

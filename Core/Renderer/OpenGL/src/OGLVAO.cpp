@@ -32,7 +32,7 @@ OGLVAO::OGLVAO(const Mesh &mesh) : m_buffers(2) {
         m_buffers.push_back(texCoordsID);
     } else {
         glVertexAttrib2f(1, 0.f, 0.f);
-        AVLIT_LOG("Mesh without texture coordinates");
+        AVLIT_LOG("Loaded a mesh without texture coordinates");
     }
 
     if(mesh.hasNormals()) {
@@ -47,7 +47,7 @@ OGLVAO::OGLVAO(const Mesh &mesh) : m_buffers(2) {
         m_buffers.push_back(normalsID);
     } else {
         glVertexAttrib3f(2, 1.f, 0.f, 0.f);
-        AVLIT_LOG("Mesh without normals");
+        AVLIT_LOG("Loaded a mesh without normals");
     }
 
     if(mesh.hasTangentSpace()) {
@@ -73,9 +73,11 @@ OGLVAO::OGLVAO(const Mesh &mesh) : m_buffers(2) {
     } else {
         glVertexAttrib3f(3, 1.f, 0.f, 0.f);
         glVertexAttrib3f(4, 1.f, 0.f, 0.f);
-        AVLIT_LOG("Mesh without tangent space");
+        AVLIT_LOG("Loaded a mesh without tangent space");
     }
     glBindVertexArray(0);
+    
+    GL_CHECK_ERROR();
 }
 
 OGLVAO::~OGLVAO() {

@@ -6,10 +6,11 @@ EventManager::EventManager() {
     std::fill(m_mouseReleaseCallbacks, m_mouseReleaseCallbacks + MOUSEBINDS, []() {});
 }
 
-void EventManager::addKey(Qt::Key key, std::function<void(float)> &&callback) {
+void EventManager::addKey(Qt::Key key, std::function<void(float)> &&callback, bool repeat) {
     m_keyboardPressed.push_back(false);
     m_keyboardCallbackIndices.insert(std::pair<int, int>(key, m_keyboardCallbacks.size()));
     m_keyboardCallbacks.emplace_back(std::move(callback));
+    m_repeatEvent.push_back(repeat);
 }
 
 void EventManager::setMouseCallback(MouseEvent clickType, std::function<void(QPoint, QPoint)> &&callback) {
@@ -26,8 +27,12 @@ void EventManager::pollEvents() {
             .count() /
         1000000.f;
     for(int i = 0; i < static_cast<int>(m_keyboardPressed.size()); ++i) {
-        if(m_keyboardPressed[i])
+        if(m_keyboardPressed[i]) {
             m_keyboardCallbacks[i](elapsed);
+
+            if(!m_repeatEvent[i])
+                m_keyboardPressed[i] = false;
+        }
     }
 
     if(m_mousePressed[static_cast<int>(MouseEvent::LEFT_DRAGGED)] && m_startPos != m_lastPos) {

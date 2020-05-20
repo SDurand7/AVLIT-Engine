@@ -51,7 +51,11 @@ void MainWindow::initializeDemo() {
         app->translateCameraRight(-distance);
     });
 
-    m_eventManager.addKey(Qt::Key::Key_F5, [app = m_app.get()](float) { app->reloadShaders(); });
+    m_eventManager.addKey(
+        Qt::Key::Key_F, [app = m_app.get()](float) { app->switchLightState(); }, false);
+
+    m_eventManager.addKey(
+        Qt::Key::Key_F5, [app = m_app.get()](float) { app->reloadShaders(); }, false);
 
     m_eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [app = m_app.get()](QPoint start, QPoint end) {
         int dx = end.x() - start.x();

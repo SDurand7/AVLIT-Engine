@@ -3,6 +3,12 @@
 #include <iostream>
 
 
+#define AT "\n       --> file " << __FILE__ << " line " << __LINE__ << "\n" << std::endl
+#define AVLIT_LOG(msg) (std::cout << "[LOG]: " << msg << AT)
+#define AVLIT_WARN(msg) (std::cout << "[WARN]: " << msg << AT)
+#define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << AT)
+
+
 /// Debug macros
 #ifdef AVLIT_DEBUG
 #include <cassert>
@@ -11,12 +17,10 @@
 
 static std::chrono::steady_clock::time_point start;
 
-#define AVLIT_ASSERT(test, msg)                                                                                         \
+#define AVLIT_ASSERT(test, msg)                                                                                        \
     if(!test)                                                                                                          \
-        AVLIT_LOG(msg);                                                                                                      \
+        AVLIT_LOG(msg);                                                                                                \
     assert(test)
-#define AVLIT_LOG(msg) (std::cout << "[LOG]: " << msg << std::endl)
-#define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << std::endl)
 #define STR(v) std::to_string(v)
 #define VEC_STR(v) (STR(v.x) + " " + STR(v.y) + " " + STR(v.z) + " ")
 
@@ -45,7 +49,7 @@ static std::chrono::steady_clock::time_point start;
                 errorMessage = "Invalid framebuffer operation";                                                        \
                 break;                                                                                                 \
             }                                                                                                          \
-            LOG("[OGL ERROR]: " + errorMessage);                                                                       \
+            std::cerr << "[OGL ERROR]: " << errorMessage << AT;                                                        \
         }                                                                                                              \
     }
 #endif
@@ -57,8 +61,6 @@ static std::chrono::steady_clock::time_point start;
 // clang-format on
 
 #define AVLIT_ASSERT(test, msg) NONE
-#define AVLIT_LOG(msg) NONE
-#define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << std::endl)
 #define STR(v) NONE
 #define VEC_STR(v) NONE
 

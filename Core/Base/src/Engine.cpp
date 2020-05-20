@@ -20,14 +20,15 @@ Engine::Engine() {
 
 void Engine::createInstance() {
     if(m_instance) {
-        AVLIT_LOG("[WARNING]: Engine already created");
+        AVLIT_WARN("Engine already initialized");
     } else {
         m_instance = new Engine();
+        AVLIT_LOG("Engine initialized");
     }
 }
 Engine *Engine::instance() {
     if(!m_instance) {
-        AVLIT_LOG("[OOPS]: Engine was never initialiazed, segfault incoming");
+        AVLIT_WARN("Engine is uninitialized");
     }
     return m_instance;
 }

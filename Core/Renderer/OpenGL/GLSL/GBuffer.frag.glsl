@@ -40,9 +40,9 @@ void main() {
     float viewZ = texCoordViewZNormalX.z;
 
     // Unpacking everything
-    vec3 normal = vec3(texCoordViewZNormalX.w, tangentNormalY.w, bitangentNormalZ.w);
-    vec3 tangent = tangentNormalY.xyz;
-    vec3 bitangent = bitangentNormalZ.xyz;
+    vec3 normal = normalize(vec3(texCoordViewZNormalX.w, tangentNormalY.w, bitangentNormalZ.w));
+    vec3 tangent = normalize(tangentNormalY.xyz);
+    vec3 bitangent = normalize(bitangentNormalZ.xyz);
 
     outNormalZ = vec4(material.hasNormalMap ? normalize(mat3(tangent, bitangent, normal) *
                                                         (2.f * texture(material.normalMap, textureCoord).xyz - 1.f))
