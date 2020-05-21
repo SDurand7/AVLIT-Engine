@@ -32,10 +32,9 @@ float shadow(vec4 position, vec3 normal) {
     vec2 texelSize = 1.f / textureSize(shadowMap, 0);
 
     float result = 0.f;
-    // TODO: iterate using ints
-    for(float i = -1.5f; i <= 1.5f + 0.001f; i += 1.f) {
-        for(float j = -1.5f; j <= 1.5f + 0.001f; j += 1.f) {
-            result += texture(shadowMap, vec3(position.xy + vec2(i, j) * texelSize, position.z - 0.00065f));
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+            result += texture(shadowMap, vec3(position.xy + vec2(i - 1.5f, j - 1.5f) * texelSize, position.z - 0.00065f));
         }
     }
 
@@ -61,7 +60,7 @@ float distributionGGX(vec3 normal, vec3 hv, float roughness) {
 float geometryGGX(float cosTheta, float roughness) {
     float r = roughness + 1.f;
     float k = r * r / 8.f;
-    
+
     float div = cosTheta * (1.f - k) + k;
 
     return cosTheta / div;
@@ -112,6 +111,6 @@ void main() {
         vec3 lambert = albedo.rgb / PI * kd;
         vec3 cookTorrance = d * f * g / max((4.f * cosThetai * cosThetao), 0.15f);
 
-        outFragColor = vec4((lambert + cookTorrance) * radiance * cosThetai, 1.f); 
+        outFragColor = vec4((lambert + cookTorrance) * radiance * cosThetai, 1.f);
     }
 }

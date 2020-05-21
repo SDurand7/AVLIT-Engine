@@ -20,23 +20,23 @@ Engine::Engine() {
 
 void Engine::createInstance() {
     if(m_instance) {
-        AVLIT_WARN("Engine already initialized");
+        AVLIT_WARN("engine already initialized");
     } else {
-        AVLIT_LOG("Initializing the engine...");
+        AVLIT_LOG("initializing the engine...");
         m_instance = new Engine();
-        AVLIT_LOG("Engine initialized");
+        AVLIT_LOG("engine initialized");
     }
 }
 Engine *Engine::instance() {
     if(!m_instance) {
-        AVLIT_WARN("Engine is uninitialized");
+        AVLIT_WARN("engine is uninitialized");
     }
     return m_instance;
 }
 
 void Engine::deleteInstance() {
     delete m_instance;
-    AVLIT_LOG("Engine ressources freed successfully");
+    AVLIT_LOG("engine ressources freed successfully");
 }
 
 Scene *Engine::scene() const { return m_scene.get(); }

@@ -1,12 +1,16 @@
 #version 410 core
 
-layout(location = 0) in vec4 texCoordViewZNormalX;
-layout(location = 1) in vec4 tangentNormalY;
-layout(location = 2) in vec4 bitangentNormalZ;
-
 layout(location = 0) out vec4 outNormalZ;
 layout(location = 1) out vec4 outAlbedo;
 layout(location = 2) out vec2 outMetalnessRoughness;
+
+in Data {
+    float viewZ;
+    vec2 textureCoord;
+    vec3 normal;
+    vec3 tangent;
+    vec3 bitangent;
+} fs_in;
 
 
 struct Material {
@@ -31,23 +35,21 @@ uniform Material material;
 
 
 void main() {
-    vec2 textureCoord = texCoordViewZNormalX.xy;
+    vec2 textureCoord = fs_in.textureCoord;
 
     float alpha = material.hasAlphaMap ? texture(material.alphaMap, textureCoord).x : material.alpha;
     if(alpha < 0.25)
         discard;
 
-    float viewZ = texCoordViewZNormalX.z;
-
-    // Unpacking everything
-    vec3 normal = normalize(vec3(texCoordViewZNormalX.w, tangentNormalY.w, bitangentNormalZ.w));
-    vec3 tangent = normalize(tangentNormalY.xyz);
-    vec3 bitangent = normalize(bitangentNormalZ.xyz);
+    // Re-normalize everything after interpolation
+    vec3 normal = normalize(fs_in.normal);
+    vec3 tangent = normalize(fs_in.tangent);
+    vec3 bitangent = normalize(fs_in.bitangent);
 
     outNormalZ = vec4(material.hasNormalMap ? normalize(mat3(tangent, bitangent, normal) *
                                                         (2.f * texture(material.normalMap, textureCoord).xyz - 1.f))
                                             : normal,
-                      viewZ);
+                      fs_in.viewZ);
 
     outAlbedo = vec4(material.hasAlbedoMap ? texture(material.albedoMap, textureCoord).xyz : material.albedo, alpha);
 

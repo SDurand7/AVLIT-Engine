@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-#define AT "\n       --> file " << __FILE__ << " line " << __LINE__ << "\n" << std::endl
+#define AT "\n    --> at " << __FILE__ << " line " << __LINE__ << std::endl
 #define AVLIT_LOG(msg) (std::cout << "[LOG]: " << msg << AT)
 #define AVLIT_WARN(msg) (std::cout << "[WARN]: " << msg << AT)
 #define AVLIT_ERROR(msg) (std::cerr << "[ERROR]: " << msg << AT)

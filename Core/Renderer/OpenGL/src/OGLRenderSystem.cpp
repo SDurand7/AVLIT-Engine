@@ -37,20 +37,16 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
 void OGLRenderSystem::reloadShaders() {
     m_shaderManager = OGLShaderManager(
         {{OGLShaderType::GBUFFER,
-          {{OGLShaderStage::VERTEX, "GBuffer.vert.glsl"}, {OGLShaderStage::FRAGMENT, "GBuffer.frag.glsl"}}},
+          {{OGLShaderStage::VERTEX, "GBuffer.vert"}, {OGLShaderStage::FRAGMENT, "GBuffer.frag"}}},
          {OGLShaderType::DEFERRED_LIGHTING,
-          {{OGLShaderStage::VERTEX, "DeferredLighting.vert.glsl"},
-           {OGLShaderStage::FRAGMENT, "DeferredLighting.frag.glsl"}}},
+          {{OGLShaderStage::VERTEX, "DeferredLighting.vert"}, {OGLShaderStage::FRAGMENT, "DeferredLighting.frag"}}},
          {OGLShaderType::SHADOW_MAPPING,
-          {{OGLShaderStage::VERTEX, "ShadowMapping.vert.glsl"}, {OGLShaderStage::FRAGMENT, "ShadowMapping.frag.glsl"}}},
-         {OGLShaderType::SKYBOX,
-          {{OGLShaderStage::VERTEX, "Skybox.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Skybox.frag.glsl"}}},
+          {{OGLShaderStage::VERTEX, "ShadowMapping.vert"}, {OGLShaderStage::FRAGMENT, "ShadowMapping.frag"}}},
+         {OGLShaderType::SKYBOX, {{OGLShaderStage::VERTEX, "Skybox.vert"}, {OGLShaderStage::FRAGMENT, "Skybox.frag"}}},
          {OGLShaderType::TONEMAPPING,
-          {{OGLShaderStage::VERTEX, "Tonemapping.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Tonemapping.frag.glsl"}}},
-         {OGLShaderType::SSAO,
-          {{OGLShaderStage::VERTEX, "SSAO.vert.glsl"}, {OGLShaderStage::FRAGMENT, "SSAO.frag.glsl"}}},
-         {OGLShaderType::BLUR,
-          {{OGLShaderStage::VERTEX, "Blur.vert.glsl"}, {OGLShaderStage::FRAGMENT, "Blur.frag.glsl"}}}});
+          {{OGLShaderStage::VERTEX, "Tonemapping.vert"}, {OGLShaderStage::FRAGMENT, "Tonemapping.frag"}}},
+         {OGLShaderType::SSAO, {{OGLShaderStage::VERTEX, "SSAO.vert"}, {OGLShaderStage::FRAGMENT, "SSAO.frag"}}},
+         {OGLShaderType::BLUR, {{OGLShaderStage::VERTEX, "Blur.vert"}, {OGLShaderStage::FRAGMENT, "Blur.frag"}}}});
 
     if(m_camera) {
         setupTextureUnits();
@@ -58,7 +54,7 @@ void OGLRenderSystem::reloadShaders() {
 
     GL_CHECK_ERROR();
 
-    AVLIT_LOG("Shaders reload complete");
+    AVLIT_LOG("shaders reload complete");
 }
 
 /// Deferred shading
