@@ -3,24 +3,25 @@
 
 namespace AVLIT {
 
-const Texture *TextureManager::addTexture(const std::string &path, const uchar *data, int width, int height,
-                                          InternalFormat internalFormat, Format format) {
-    auto texture = std::make_unique<Texture>(data, width, height, internalFormat, format);
-    auto texturePtr = texture.get();
-    m_textures.emplace(path, std::move(texture));
+const Texture *TextureManager::addTexture(const std::string &name, uchar **data, uint width, uint height,
+                                          TextureType textureType, TextureInternalFormat internalFormat,
+                                          TextureFormat format) {
+    auto texture = std::make_unique<Texture>(internalFormat, format, textureType);
+
+    Texture *texturePtr = texture.get();
+    texturePtr->allocate(data, width, height);
+
+    m_textures.emplace(name, std::move(texture));
+
     return texturePtr;
 }
 
 const Texture *TextureManager::texture(const std::string &path) const {
-    auto textureIt = m_textures.find(path);
+    const auto textureIt = m_textures.find(path);
+
     if(textureIt == m_textures.cend())
         return nullptr;
     return textureIt->second.get();
-}
-
-const Texture *TextureManager::addCubemap(uchar *datas[6], int width[6], int height[6]) {
-    m_cubemap = std::make_unique<Texture>(datas, width, height);
-    return m_cubemap.get();
 }
 
 } // namespace AVLIT

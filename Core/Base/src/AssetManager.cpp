@@ -169,29 +169,29 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
     if(!data) {
         AVLIT_LOG("[ERROR]: error loading texture data from " + fullpath);
     } else {
-        InternalFormat internalFormat;
-        Format format;
+        TextureInternalFormat internalFormat;
+        TextureFormat format;
 
         switch(intFormat) {
         case 1:
-            format = Format::R;
-            internalFormat = InternalFormat::R;
+            format = TextureFormat::R;
+            internalFormat = TextureInternalFormat::R;
             break;
         case 3:
-            format = Format::RGB;
+            format = TextureFormat::RGB;
 
             if(type == aiTextureType_DIFFUSE)
-                internalFormat = InternalFormat::SRGB;
+                internalFormat = TextureInternalFormat::SRGB;
             else
-                internalFormat = InternalFormat::RGB;
+                internalFormat = TextureInternalFormat::RGB;
             break;
         case 4:
-            format = Format::RGBA;
+            format = TextureFormat::RGBA;
 
             if(type == aiTextureType_DIFFUSE)
-                internalFormat = InternalFormat::SRGBA;
+                internalFormat = TextureInternalFormat::SRGBA;
             else
-                internalFormat = InternalFormat::RGBA;
+                internalFormat = TextureInternalFormat::RGBA;
             break;
         default:
             AVLIT_LOG("[ERROR]: unsupported texture format");
@@ -199,8 +199,8 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
             return nullptr;
         }
 
-
-        texture = textureManager->addTexture(fullpath, data, width, height, internalFormat, format);
+        texture =
+            textureManager->addTexture(fullpath, &data, width, height, TextureType::TEXTURE2D, internalFormat, format);
 
         stbi_image_free(data);
     }
@@ -208,19 +208,22 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
 }
 
 const Texture *AssetManager::loadSkyboxTexture(const std::vector<std::string> &files) const {
-    uchar *datas[6];
-    int width[6];
-    int height[6];
+    uchar *data[6];
+    int width;
+    int height;
 
-    for(uint i = 0; i < 6; ++i) {
+    for(int i = 0; i < 6; ++i) {
         int format;
-        datas[i] = stbi_load(files[i].c_str(), &width[i], &height[i], &format, 0);
+
+        data[i] = stbi_load(files[i].c_str(), &width, &height, &format, 0);
     }
 
-    auto texture = m_textureManager->addCubemap(datas, width, height);
+    std::string name{files[0].substr(0, files[0].find_last_of('/') - 1)};
+    AVLIT_LOG(name);
+    auto texture = m_textureManager->addTexture(name, data, width, height, TextureType::CUBEMAP);
 
-    for(uint i = 0; i < 6; ++i) {
-        stbi_image_free(datas[i]);
+    for(int i = 0; i < 6; ++i) {
+        stbi_image_free(data[i]);
     }
 
     return texture;

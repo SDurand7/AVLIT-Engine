@@ -3,9 +3,9 @@
 
 namespace AVLIT {
 
-inline void OGLTexture::bind(const std::string &name, Shader *shader, GLint textureUnit, GLenum textureType) const {
+inline void OGLTexture::bind(const std::string &name, OGLShader *shader, GLint textureUnit) const {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(textureType, m_textureID);
+    glBindTexture(m_textureType, m_textureID);
     shader->setUniform(name, textureUnit);
 }
 

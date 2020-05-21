@@ -145,7 +145,6 @@ void OGLRenderSystem::lightingPass() {
     shader->setUniform("inverseView", m_camera->transform());
     shader->setUniform("inverseProjection", m_camera->inverseProjection());
     m_shadowMap.bindBuffer(12, 0, 0);
-    m_shadowMap.bindBuffer(13, 1, 0);
 
     // Ambient light
     m_hdrFBO.bind();

@@ -14,12 +14,11 @@ class TextureManager {
 public:
     TextureManager() = default;
 
-    const Texture *addTexture(const std::string &path, const uchar *data, int width, int height,
-                              InternalFormat internalFormat, Format format);
+    const Texture *addTexture(const std::string &name, uchar **data, uint width, uint height, TextureType textureType,
+                              TextureInternalFormat internalFormat = TextureInternalFormat::RGB,
+                              TextureFormat format = TextureFormat::RGB);
 
     const Texture *texture(const std::string &path) const;
-
-    const Texture *addCubemap(uchar *datas[6], int width[6], int height[6]);
 
 private:
     std::unordered_map<std::string, TextureUptr> m_textures;
