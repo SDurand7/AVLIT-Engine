@@ -70,6 +70,7 @@ float geometrySmith(float cosThetao, float cosThetai, float roughness) {
     return geometryGGX(cosThetao, roughness) * geometryGGX(cosThetai, roughness);
 }
 
+
 void main() {
     vec4 albedo = texture(albedoMap, textureCoord);
 

@@ -9,15 +9,14 @@
 #include <Core/Base/include/Types.hpp>
 #include <Core/Base/include/Camera.hpp>
 #include <Core/Renderer/OpenGL/include/OGLShaderManager.hpp>
-#include <Core/Renderer/OpenGL/include/OGLSkybox.hpp>
 #include <Core/Renderer/OpenGL/include/OGLFramebuffer.hpp>
+#include <Core/Renderer/OpenGL/include/OGLVAO.hpp>
 
 
 namespace AVLIT {
 class OGLRenderSystem {
 public:
-    OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights,
-                    const SceneBVHNode *graphRoot);
+    OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights);
 
     void reloadShaders();
 
@@ -38,11 +37,9 @@ private:
 
     const std::vector<LightUptr> &m_lights;
 
-    const SceneBVHNode *m_graphRoot;
-
     OGLShaderManager m_shaderManager;
 
-    OGLSkybox m_skybox;
+    const OGLTexture *m_skybox = nullptr;
 
     OGLFramebuffer m_GBuffer;
 
@@ -55,6 +52,8 @@ private:
     OGLFramebuffer m_hdrFBO;
 
     OGLVAO m_quadVAO;
+
+    OGLVAO m_cubeVAO;
 
 private:
     void gbufferPass();

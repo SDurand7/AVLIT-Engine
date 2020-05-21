@@ -12,9 +12,8 @@
 
 namespace AVLIT {
 
-OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights,
-                                 const SceneBVHNode *graphRoot)
-    : m_drawables{drawables}, m_lights{lights}, m_graphRoot{graphRoot} {
+OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights)
+    : m_drawables{drawables}, m_lights{lights} {
     if(!gladLoadGL()) {
         AVLIT_ERROR("GLAD could not load OpenGL's functions");
     }
@@ -31,6 +30,19 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
 
     m_quadVAO = OGLVAO{
         Mesh{nullptr, {0, 1, 2, 0, 3, 1}, {{-1.f, -1.f, 0.f}, {1.f, 1.f, 0.f}, {-1.f, 1.f, 0.f}, {1.f, -1.f, 0.f}}}};
+
+    m_cubeVAO = OGLVAO{Mesh{
+        nullptr,
+        {0, 1, 3, 3, 1, 2, 1, 5, 2, 2, 5, 6, 5, 4, 6, 6, 4, 7, 4, 0, 7, 7, 0, 3, 3, 2, 7, 7, 2, 6, 4, 5, 0, 0, 5, 1},
+        {{-1.f, -1.f, -1.f},
+         {1.f, -1.f, -1.f},
+         {1.f, 1.f, -1.f},
+         {-1.f, 1.f, -1.f},
+         {-1.f, -1.f, 1.f},
+         {1.f, -1.f, 1.f},
+         {1.f, 1.f, 1.f},
+         {-1.f, 1.f, 1.f}}}};
+
     GL_CHECK_ERROR();
 }
 
@@ -184,7 +196,7 @@ void OGLRenderSystem::tonemappingPass() {
 }
 
 void OGLRenderSystem::skyboxPass() {
-    if(m_skybox.hasTexture()) {
+    if(m_skybox) {
         glDepthMask(GL_FALSE);
         auto shader = m_shaderManager.shader(OGLShaderType::SKYBOX);
         shader->bind();
@@ -192,8 +204,11 @@ void OGLRenderSystem::skyboxPass() {
         Mat4 skyboxView = m_camera->view();
         skyboxView[3] = {0.f, 0.f, 0.f, 1.f};
         shader->setUniform("viewProjection", m_camera->projection() * skyboxView);
-        m_skybox.bind("skybox", shader, 0);
 
+        m_skybox->bind(0);
+        shader->setUniform("skybox", 0);
+
+        m_cubeVAO.bind();
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
         glDepthMask(GL_TRUE);
     }
@@ -213,6 +228,7 @@ void OGLRenderSystem::drawShadowMap(Light *light) {
     auto shader = m_shaderManager.shader(OGLShaderType::SHADOW_MAPPING);
     shader->bind();
     m_shadowMap.bind();
+
     glClear(GL_DEPTH_BUFFER_BIT);
     for(const auto &drawable : m_drawables) {
         AABB aabb = drawable->aabb();
@@ -220,8 +236,19 @@ void OGLRenderSystem::drawShadowMap(Light *light) {
         if(drawable->isVisible() && inFrustum(aabb, light->projection())) {
             Mat4 modelView = light->view() * Mat4{drawable->transform()};
             shader->setUniform("mvp", light->projection() * modelView);
+
             const auto model = drawable->model();
             for(const auto &meshByMaterial : model->meshesByMaterial()) {
+                auto alphaMap = meshByMaterial.first->alphaMap();
+
+                shader->setUniform("hasAlphaMap", static_cast<bool>(alphaMap));
+                if(alphaMap) {
+                    alphaMap->bind(0);
+                    shader->setUniform("alphaMap", 0);
+                } else {
+                    shader->setUniform("alpha", meshByMaterial.first->alpha());
+                }
+
                 for(const auto mesh : meshByMaterial.second) {
                     aabb = mesh->aabb();
                     aabb.applyTransform(modelView);

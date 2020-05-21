@@ -18,6 +18,7 @@ Application::Application(int width, int height)
     m_camera = static_cast<AVLIT::Camera *>(addCamera("Main camera", transform)->sceneObject());
     m_scene->setCurrentCamera(m_camera);
     m_scene->setAmbientColor({0.015f, 0.012f, 0.009f});
+
     m_light = static_cast<AVLIT::Light *>(
         addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f})->sceneObject());
 
@@ -32,9 +33,9 @@ Application::Application(int width, int height)
     addLight(AVLIT::LightType::DIRECTIONAL_LIGHT, AVLIT::rotate({1.f, 0.f, 0.f}, -AVLIT::pi() / 3.f),
              {0.8f, 0.7f, 0.65f});
 
-     transform = AVLIT::rotate({0.f, 4.f, 0.f}, AVLIT::pi() / 2);
-     transform[3] += AVLIT::Vec3(-40.f, 6.f, -1.5f);
-     addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f});
+    transform = AVLIT::rotate({0.f, 4.f, 0.f}, AVLIT::pi() / 2);
+    transform[3] += AVLIT::Vec3(-40.f, 6.f, -1.5f);
+    addLight(AVLIT::LightType::SPOT_LIGHT, transform, {85.f, 65.f, 50.f});
 }
 
 void Application::resize(int width, int height) {

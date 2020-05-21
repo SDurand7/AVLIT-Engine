@@ -14,6 +14,10 @@ public:
 
     inline bool isTwoSided() const;
 
+    inline Color3 albedo() const;
+
+    inline float alpha() const;
+
     inline void setParameters(const std::string &name, Shader *shader) const;
 
     void setAlbedo(Color3 albedo);
@@ -31,6 +35,16 @@ public:
     void setAlphaMap(const Texture *alphaMap);
 
     void setTwoSided(bool twoSided);
+
+    inline const Texture *normalMap() const;
+
+    inline const Texture *albedoMap() const;
+
+    inline const Texture *metalnessMap() const;
+
+    inline const Texture *roughnessMap() const;
+
+    inline const Texture *alphaMap() const;
 
 private:
     Color3 m_albedo = {1.f, 1.f, 1.f};

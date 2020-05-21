@@ -218,8 +218,7 @@ const Texture *AssetManager::loadSkyboxTexture(const std::vector<std::string> &f
         data[i] = stbi_load(files[i].c_str(), &width, &height, &format, 0);
     }
 
-    std::string name{files[0].substr(0, files[0].find_last_of('/') - 1)};
-    AVLIT_LOG(name);
+    std::string name{files[0].substr(0, files[0].find_last_of('/'))};
     auto texture = m_textureManager->addTexture(name, data, width, height, TextureType::CUBEMAP);
 
     for(int i = 0; i < 6; ++i) {

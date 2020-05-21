@@ -7,7 +7,7 @@
 
 namespace AVLIT {
 
-const float nearZ = 0.1f;
+const float nearZ = 0.85f;
 
 /// Light base class
 Light::Light(const std::string &name, const Transform &transform, const Color3 &color)
@@ -35,7 +35,7 @@ const Mat4 &PointLight::projection() const { return m_projection; }
 
 
 /// DirectionalLight derived class
-const Mat4 DirectionalLight::m_projection = ortho(-85.f, 85.f, -85.f, 100.f, -80.f, 150.f);
+const Mat4 DirectionalLight::m_projection = ortho(-75.f, 75.f, -80.f, 90.f, -80.f, 150.f);
 
 DirectionalLight::DirectionalLight(const std::string &name, const Transform &transform, const Color3 &color)
     : Light{name, transform, color} {}

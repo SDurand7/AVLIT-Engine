@@ -29,7 +29,7 @@ public:
 
     ~OGLTexture();
 
-    inline void bind(const std::string &name, OGLShader *shader, GLint textureUnit) const;
+    inline void bind(GLint textureUnit) const;
 
 private:
     GLuint m_textureID;

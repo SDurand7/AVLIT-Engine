@@ -21,7 +21,7 @@ inline void OGLRenderSystem::setCurrentCamera(Camera *camera) {
     m_camera = camera;
 }
 
-inline void OGLRenderSystem::setSkybox(const Texture *texture) { m_skybox = OGLSkybox{texture}; }
+inline void OGLRenderSystem::setSkybox(const Texture *texture) { m_skybox = texture; }
 
 inline void OGLRenderSystem::resize(int width, int height) {
     m_GBuffer.resize(width, height);

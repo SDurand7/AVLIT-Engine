@@ -38,7 +38,7 @@ void main() {
     vec2 textureCoord = fs_in.textureCoord;
 
     float alpha = material.hasAlphaMap ? texture(material.alphaMap, textureCoord).x : material.alpha;
-    if(alpha < 0.25)
+    if(alpha < 0.25f)
         discard;
 
     // Re-normalize everything after interpolation
