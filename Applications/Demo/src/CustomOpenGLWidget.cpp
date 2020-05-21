@@ -8,7 +8,7 @@
 
 CustomOpenGLWidget::CustomOpenGLWidget(QWidget *parent) : QOpenGLWidget{parent} {}
 
-CustomOpenGLWidget::~CustomOpenGLWidget() {}
+CustomOpenGLWidget::~CustomOpenGLWidget() { AVLIT::Engine::deleteInstance(); }
 
 void CustomOpenGLWidget::initializeGL() {
     connect(context(), SIGNAL(aboutToBeDestroyed()), this, SLOT(release()));
@@ -20,4 +20,4 @@ void CustomOpenGLWidget::resizeGL(int w, int h) { AVLIT::Engine::instance()->sce
 
 void CustomOpenGLWidget::paintGL() { AVLIT::Engine::instance()->scene()->render(); }
 
-void CustomOpenGLWidget::release() { AVLIT::Engine::deleteInstance(); }
+void CustomOpenGLWidget::release() {}

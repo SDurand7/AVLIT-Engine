@@ -16,7 +16,7 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
                                  const SceneBVHNode *graphRoot)
     : m_drawables{drawables}, m_lights{lights}, m_graphRoot{graphRoot} {
     if(!gladLoadGL()) {
-        AVLIT_LOG("[ERROR]: GLAD could not load OpenGL's functions");
+        AVLIT_ERROR("GLAD could not load OpenGL's functions");
     }
 
     glEnable(GL_DEPTH_TEST);

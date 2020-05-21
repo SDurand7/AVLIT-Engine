@@ -22,6 +22,7 @@ void Engine::createInstance() {
     if(m_instance) {
         AVLIT_WARN("Engine already initialized");
     } else {
+        AVLIT_LOG("Initializing the engine...");
         m_instance = new Engine();
         AVLIT_LOG("Engine initialized");
     }
@@ -33,7 +34,10 @@ Engine *Engine::instance() {
     return m_instance;
 }
 
-void Engine::deleteInstance() { delete m_instance; }
+void Engine::deleteInstance() {
+    delete m_instance;
+    AVLIT_LOG("Engine ressources freed successfully");
+}
 
 Scene *Engine::scene() const { return m_scene.get(); }
 
