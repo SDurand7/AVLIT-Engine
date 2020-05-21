@@ -11,7 +11,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), m_drawTimer(this) {
     QSurfaceFormat format;
-    format.setVersion(4, 4);
+    format.setVersion(4, 6);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
