@@ -5,6 +5,8 @@
 
 #include <Core/Base/include/Math.hpp>
 
+#include "bluenoise.h"
+
 
 namespace AVLIT {
 
@@ -101,17 +103,18 @@ OGLFramebuffer::OGLFramebuffer(GLuint width, GLuint height, GLuint noiseW, GLuin
     glSamplerParameteri(m_samplers[1], GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
     // Generating random tangent vectors
-    std::default_random_engine gen;
-    std::uniform_real_distribution<GLfloat> distribution{-1.f, 1.f};
     std::vector<Vec3> vectors;
 
     const int size = noiseW * noiseH;
     vectors.reserve(size);
 
-    for(int i = 0; i < size; ++i) {
-        vectors.emplace_back(distribution(gen), distribution(gen), 0.f);
+    // Bluenoise pretty much doesn't make a difference in that case, but it's still cool 
+    for(int i = 0; i < noiseH; ++i) {
+        for (int j = 0; j < noiseW; ++j) {
+            vectors.emplace_back(tile[i][j][0] * 2.f - 1.f, tile[i][j][1] * 2.f - 1.f, 0.f);
 
-        vectors[i] = normalize(vectors[i]);
+            vectors[i] = normalize(vectors[i]);
+        }
     }
 
     glActiveTexture(GL_TEXTURE0 + textureUnit);

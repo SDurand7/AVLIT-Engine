@@ -26,7 +26,7 @@ void main() {
     vec3 tangent = normalize(noiseVec - normal * dot(normal, noiseVec));
     vec3 bitangent = cross(normal, tangent);
 
-    mat3 tbn = mat3(tangent, cross(normal, tangent), normal);
+    mat3 tbn = mat3(tangent, bitangent, normal);
 
     float z = texture(normalZ, textureCoord).w;
     vec4 dir = inverseProjection * vec4(2.f * textureCoord - 1.f, 0.f, 1.f);
