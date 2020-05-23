@@ -1,7 +1,7 @@
 #pragma once
 
-#ifdef DX_
-/// Coming soon
-#else
+#ifdef OPENGL
 #include <Core/Renderer/OpenGL/include/OGLTexture.hpp>
+#else
+/// Coming soon
 #endif

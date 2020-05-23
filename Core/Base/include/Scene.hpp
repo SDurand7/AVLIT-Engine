@@ -7,6 +7,7 @@
 #include <Core/Base/include/Drawable.hpp>
 #include <Core/Base/include/Camera.hpp>
 #include <Core/Base/include/Light.hpp>
+#include <Core/Renderer/include/RenderSystem.hpp>
 
 
 namespace AVLIT {
@@ -39,7 +40,7 @@ public:
                                     float innerAngle = pi() / 8, float outerAngle = pi() / 6);
 
     AVLIT_API SceneBVHNode *addCamera(SceneBVHNode *parent, const std::string &name, const Transform &transform,
-                                     int width, int height, float fovy, float near = 0.4f, float far = 450.f);
+                                     int width, int height, float fovy, float near = 0.75f, float far = 250.f);
 
     AVLIT_API void reloadShaders();
 
@@ -52,7 +53,7 @@ public:
 private:
     SceneBVHNodeUptr m_graphRoot;
 
-    RenderSystemUptr m_renderSystem;
+    RenderSystemUptr m_renderSystem = nullptr;
 
     // TODO: handle deletion of scene objects from the graph
     std::vector<SceneBVHNodeUptr> m_nodes;

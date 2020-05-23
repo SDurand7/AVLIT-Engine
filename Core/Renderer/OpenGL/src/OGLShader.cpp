@@ -27,6 +27,8 @@ OGLShader::OGLShader(const OGLShaderStageFiles &sources) : m_programID{glCreateP
 
         AVLIT_ERROR("shader program linking failed with the following:\n" + log);
     }
+
+    GL_CHECK_ERROR();
 }
 
 OGLShader::OGLShader(OGLShader &&shader) noexcept { moveOperation(std::move(shader)); }
@@ -71,6 +73,7 @@ GLuint OGLShader::parseGLSL(GLenum shaderType, const std::string &filename) {
         AVLIT_ERROR("could not open file " + filename);
     }
 
+    GL_CHECK_ERROR();
     return id;
 }
 

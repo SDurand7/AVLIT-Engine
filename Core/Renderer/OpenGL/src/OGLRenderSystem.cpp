@@ -8,16 +8,23 @@
 #include <Core/Base/include/Model.hpp>
 #include <Core/Base/include/Mesh.hpp>
 #include <Core/Base/include/Material.hpp>
+#include <Core/Renderer/OpenGL/include/OGLTexture.hpp>
+
+#include "bluenoise.h"
 
 
 namespace AVLIT {
 
-OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights)
-    : m_drawables{drawables}, m_lights{lights} {
-    if(!gladLoadGL()) {
-        AVLIT_ERROR("GLAD could not load OpenGL's functions");
-    }
+static constexpr GLuint ShadowMapResolution = 2048;
 
+void OGLRenderSystem::initGL() {
+    if(!gladLoadGL())
+        AVLIT_ERROR("GLAD could not load OpenGL's functions");
+}
+
+OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights,
+                                 Camera *camera)
+    : m_camera{camera}, m_drawables{drawables}, m_lights{lights} {
     glEnable(GL_DEPTH_TEST);
     glCullFace(GL_BACK);
     glDepthFunc(GL_LEQUAL);
@@ -43,6 +50,25 @@ OGLRenderSystem::OGLRenderSystem(const std::vector<DrawableUptr> &drawables, con
          {1.f, 1.f, 1.f},
          {-1.f, 1.f, 1.f}}}};
 
+    OGLFramebuffer::saveDefault();
+
+    // Create the SSAO noise texture // TODO: center & normalize
+    std::vector<float> tile(std::begin(bluenoise), std::end(bluenoise));
+    float *data = tile.data();
+    m_noiseSSAO = std::make_unique<OGLTexture>(TextureInternalFormat::RG32F, TextureFormat::RG, TextureType::TEXTURE2D,
+                                               TextureDataType::FLOAT, false);
+    m_noiseSSAO->bind(9);
+    m_noiseSSAO->allocate<float>(4, 4, &data);
+    m_noiseSSAO->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_noiseSSAO->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_noiseSSAO->setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    m_noiseSSAO->setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    initFBOs();
+    setupTextureUnits();
+
+    OGLFramebuffer::bindDefault();
+
     GL_CHECK_ERROR();
 }
 
@@ -57,8 +83,7 @@ void OGLRenderSystem::reloadShaders() {
          {OGLShaderType::SKYBOX, {{OGLShaderStage::VERTEX, "Skybox.vert"}, {OGLShaderStage::FRAGMENT, "Skybox.frag"}}},
          {OGLShaderType::TONEMAPPING,
           {{OGLShaderStage::VERTEX, "Tonemapping.vert"}, {OGLShaderStage::FRAGMENT, "Tonemapping.frag"}}},
-         {OGLShaderType::SSAO, {{OGLShaderStage::VERTEX, "SSAO.vert"}, {OGLShaderStage::FRAGMENT, "SSAO.frag"}}},
-         {OGLShaderType::BLUR, {{OGLShaderStage::VERTEX, "Blur.vert"}, {OGLShaderStage::FRAGMENT, "Blur.frag"}}}});
+         {OGLShaderType::SSAO, {{OGLShaderStage::VERTEX, "SSAO.vert"}, {OGLShaderStage::FRAGMENT, "SSAO.frag"}}}});
 
     if(m_camera) {
         setupTextureUnits();
@@ -76,8 +101,6 @@ void OGLRenderSystem::render() {
 
         ssaoPass();
 
-        ssaoBlurPass();
-
         lightingPass();
 
         tonemappingPass();
@@ -86,8 +109,51 @@ void OGLRenderSystem::render() {
 
         OGLVAO::unbindAll();
     }
+
     GL_CHECK_ERROR();
 }
+
+void OGLRenderSystem::setCurrentCamera(Camera *camera) { m_camera = camera; }
+
+void OGLRenderSystem::setSkybox(const Texture *texture) {
+    m_skybox = texture;
+
+    auto shader = m_shaderManager.shader(OGLShaderType::SKYBOX);
+    shader->bind();
+
+    m_skybox->bind(8);
+    shader->setUniform("skybox", 8);
+}
+
+void OGLRenderSystem::resize(uint width, uint height) {
+    OGLFramebuffer::saveDefault();
+
+    OGLTexture *texture;
+
+    m_GBuffer.resizeRBO(GL_DEPTH24_STENCIL8, width, height);
+    texture = m_GBuffer.texture("normalZMap");
+    texture->bind(11);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+
+    texture = m_GBuffer.texture("albedoMap");
+    texture->bind(12);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+
+    texture = m_GBuffer.texture("metalnessRoughnessMap");
+    texture->bind(13);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+
+    texture = m_ssaoFBO.texture("occlusionMap");
+    texture->bind(14);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+
+    texture = m_hdrFBO.texture("hdrImage");
+    texture->bind(15);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+
+    OGLFramebuffer::bindDefault();
+}
+
 
 void OGLRenderSystem::gbufferPass() {
     OGLFramebuffer::saveDefault();
@@ -122,41 +188,35 @@ void OGLRenderSystem::gbufferPass() {
             }
         }
     }
-    m_GBuffer.blitDepthBuffer(m_camera->width(), m_camera->height());
+
+    m_GBuffer.copyDepthBuffer(m_camera->width(), m_camera->height(), OGLFramebuffer::defaultID());
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::ssaoPass() {
     m_ssaoFBO.bind();
+
     auto shader = m_shaderManager.shader(OGLShaderType::SSAO);
     shader->bind();
-
-    glDisable(GL_DEPTH_TEST);
-    m_quadVAO.bind();
-
     shader->setUniform("view", m_camera->view());
     shader->setUniform("projection", m_camera->projection());
     shader->setUniform("inverseProjection", m_camera->inverseProjection());
-
     shader->setUniform("width", m_camera->width());
     shader->setUniform("height", m_camera->height());
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-}
-
-void OGLRenderSystem::ssaoBlurPass() {
-    m_blurFBO.bind();
-    auto shader = m_shaderManager.shader(OGLShaderType::BLUR);
-    shader->bind();
     m_quadVAO.bind();
+
+    glDisable(GL_DEPTH_TEST);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::lightingPass() {
     auto shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
     shader->bind();
     shader->setUniform("inverseView", m_camera->transform());
-    shader->setUniform("inverseProjection", m_camera->inverseProjection());
-    m_shadowMap.bindBuffer(12, 0, 0);
+    shader->setUniform("inverseProjection", m_camera->inverseProjection());    
 
     // Ambient light
     m_hdrFBO.bind();
@@ -165,23 +225,24 @@ void OGLRenderSystem::lightingPass() {
     m_lights[0]->setParameters("light", shader);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glEnable(GL_DEPTH_TEST);
-    auto shadowMapSize = m_shadowMap.size();
 
     for(int i = 1; i < static_cast<int>(m_lights.size()); ++i) {
         if(m_lights[i]->isLit()) {
-            glViewport(0, 0, shadowMapSize.first, shadowMapSize.second);
+            glViewport(0, 0, ShadowMapResolution, ShadowMapResolution);
             drawShadowMap(m_lights[i].get());
 
             glDisable(GL_DEPTH_TEST);
             glEnable(GL_BLEND);
+
             glViewport(0, 0, m_camera->width(), m_camera->height());
             drawLight(m_lights[i].get());
+
             glEnable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);
         }
     }
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
+
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::tonemappingPass() {
@@ -193,6 +254,8 @@ void OGLRenderSystem::tonemappingPass() {
     glDisable(GL_DEPTH_TEST);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glEnable(GL_DEPTH_TEST);
+
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::skyboxPass() {
@@ -204,13 +267,12 @@ void OGLRenderSystem::skyboxPass() {
         Mat4 skyboxView = m_camera->view();
         skyboxView[3] = {0.f, 0.f, 0.f, 1.f};
         shader->setUniform("viewProjection", m_camera->projection() * skyboxView);
-
-        m_skybox->bind(0);
-        shader->setUniform("skybox", 0);
-
         m_cubeVAO.bind();
+
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
         glDepthMask(GL_TRUE);
+
+        GL_CHECK_ERROR();
     }
 }
 
@@ -221,13 +283,17 @@ void OGLRenderSystem::drawLight(Light *light) {
     shader->setUniform("lightVP", light->projection() * light->view());
     m_quadVAO.bind();
     light->setParameters("light", shader);
+    m_shadowMapFBO.texture("shadowMap")->bind(10);
+
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    GL_CHECK_ERROR();
 }
 
 void OGLRenderSystem::drawShadowMap(Light *light) {
     auto shader = m_shaderManager.shader(OGLShaderType::SHADOW_MAPPING);
     shader->bind();
-    m_shadowMap.bind();
+    m_shadowMapFBO.bind();
 
     glClear(GL_DEPTH_BUFFER_BIT);
     for(const auto &drawable : m_drawables) {
@@ -260,6 +326,8 @@ void OGLRenderSystem::drawShadowMap(Light *light) {
             }
         }
     }
+
+    GL_CHECK_ERROR();
 }
 
 // Based on:
@@ -300,13 +368,91 @@ bool OGLRenderSystem::inFrustum(const AABB &aabb, const Mat4 &projection) const 
     return true;
 }
 
+void OGLRenderSystem::initFBOs() {
+    const GLuint width = m_camera->width();
+    const GLuint height = m_camera->height();
+
+    std::vector<GLenum> attachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+    std::unique_ptr<Texture> texture = nullptr;
+
+    // Shadow Map FBO
+    m_shadowMapFBO.bind();
+    texture = std::make_unique<OGLTexture>(TextureInternalFormat::DEPTH, TextureFormat::DEPTH, TextureType::TEXTURE2D,
+                                           TextureDataType::FLOAT, false);
+    texture->bind(10);
+    texture->allocate<nullptr_t>(ShadowMapResolution, ShadowMapResolution, nullptr);
+    texture->setParameter(GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+    m_shadowMapFBO.attachTexture("shadowMap", std::move(texture), GL_DEPTH_ATTACHMENT);
+    m_shadowMapFBO.setDrawBuffer(GL_NONE);
+    m_shadowMapFBO.setReadBuffer(GL_NONE);
+    if(!m_shadowMapFBO.isComplete())
+        AVLIT_ERROR("incomplete shadow map FBO");
+
+    // GBuffer FBO
+    m_GBuffer.bind();
+    texture = std::make_unique<OGLTexture>(TextureInternalFormat::RGBA32F, TextureFormat::RGBA, TextureType::TEXTURE2D,
+                                           TextureDataType::FLOAT, false);
+    texture->bind(11);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_GBuffer.attachTexture("normalZMap", std::move(texture), attachments[0]);
+
+    texture = std::make_unique<Texture>(TextureInternalFormat::RGBA, TextureFormat::RGBA, TextureType::TEXTURE2D,
+                                        TextureDataType::UBYTE, false);
+    texture->bind(12);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_GBuffer.attachTexture("albedoMap", std::move(texture), attachments[1]);
+
+    texture = std::make_unique<OGLTexture>(TextureInternalFormat::RG, TextureFormat::RG, TextureType::TEXTURE2D,
+                                           TextureDataType::UBYTE, false);
+    texture->bind(13);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_GBuffer.attachTexture("metalnessRoughnessMap", std::move(texture), attachments[2]);
+
+    m_GBuffer.attachRenderBuffer(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, width, height);
+    m_GBuffer.setDrawBuffers(attachments);
+    if(!m_GBuffer.isComplete())
+        AVLIT_ERROR("incomplete G-buffer FBO");
+
+    // SSAO FBO
+    m_ssaoFBO.bind();
+    texture = std::make_unique<OGLTexture>(TextureInternalFormat::R32F, TextureFormat::R, TextureType::TEXTURE2D,
+                                           TextureDataType::FLOAT, false);
+    texture->bind(14);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_ssaoFBO.attachTexture("occlusionMap", std::move(texture), attachments[0]);
+    m_ssaoFBO.setDrawBuffers(attachments);
+    if(!m_ssaoFBO.isComplete())
+        AVLIT_ERROR("incomplete SSAO FBO");
+
+    // HDR FBO
+    m_hdrFBO.bind();
+    texture = std::make_unique<OGLTexture>(TextureInternalFormat::RGB32F, TextureFormat::RGBA, TextureType::TEXTURE2D,
+                                           TextureDataType::FLOAT, false);
+    texture->bind(15);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_hdrFBO.attachTexture("hdrImage", std::move(texture), attachments[0]);
+    m_hdrFBO.setDrawBuffers(attachments);
+    if(!m_hdrFBO.isComplete())
+        AVLIT_ERROR("incomplete HDR FBO");
+}
+
 void OGLRenderSystem::setupTextureUnits() {
     auto shader = m_shaderManager.shader(OGLShaderType::SSAO);
     shader->bind();
-    m_GBuffer.setParameters("normalZ", shader, 5);
-    m_ssaoFBO.setParameters("noise", shader, 10);
+    shader->setUniform("normalZMap", 11);
+    shader->setUniform("noise", 9);
 
-    std::default_random_engine gen;
+    std::mt19937 gen;
     std::uniform_real_distribution<float> distribution1{-1.f, 1.f};
     std::uniform_real_distribution<float> distribution2{0.f, 1.f};
     for(int i = 0; i < 64; ++i) {
@@ -320,21 +466,19 @@ void OGLRenderSystem::setupTextureUnits() {
         shader->setUniform("samples[" + std::to_string(i) + "]", sample);
     }
 
-    shader = m_shaderManager.shader(OGLShaderType::BLUR);
-    shader->bind();
-    m_ssaoFBO.setParameters("toBlur", shader, 11);
-
     shader = m_shaderManager.shader(OGLShaderType::DEFERRED_LIGHTING);
     shader->bind();
-    m_GBuffer.setParameters("normalZMap", shader, 5);
-    m_GBuffer.setParameters("albedoMap", shader, 6);
-    m_GBuffer.setParameters("metalnessRoughnessMap", shader, 7);
-    m_blurFBO.setParameters("occlusionMap", shader, 15);
-    m_shadowMap.setParameters("shadowMap", shader, 12);
+    shader->setUniform("shadowMap", 10);
+    shader->setUniform("normalZMap", 11);
+    shader->setUniform("albedoMap", 12);
+    shader->setUniform("metalnessRoughnessMap", 13);
+    shader->setUniform("occlusionMap", 14);
 
     shader = m_shaderManager.shader(OGLShaderType::TONEMAPPING);
     shader->bind();
-    m_hdrFBO.setParameters("hdrColor", shader, 14);
+    shader->setUniform("hdrImage", 15);
+
+    GL_CHECK_ERROR();
 }
 
 } // namespace AVLIT

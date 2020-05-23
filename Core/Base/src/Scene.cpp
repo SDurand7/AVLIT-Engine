@@ -7,9 +7,7 @@
 
 namespace AVLIT {
 
-Scene::Scene()
-    : m_graphRoot{std::make_unique<SceneBVHNode>(nullptr)},
-      m_renderSystem{std::make_unique<RenderSystem>(m_drawables, m_lights)}, m_drawables{}, m_lights{}, m_cameras{} {
+Scene::Scene() : m_graphRoot{std::make_unique<SceneBVHNode>(nullptr)}, m_drawables{}, m_lights{}, m_cameras{} {
     Transform trf{1.f};
     trf[3] = {0.f, 10.f, 0.f};
     m_lights.emplace_back(std::make_unique<AmbientLight>("Ambient light", trf, Color3{0.f}));

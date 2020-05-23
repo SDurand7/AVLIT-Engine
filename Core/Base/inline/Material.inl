@@ -1,7 +1,3 @@
-#include <Core/Renderer/include/Shader.hpp>
-#include <Core/Renderer/include/Texture.hpp>
-
-
 namespace AVLIT {
 
 // TODO: handle the case where we have an alpha map

@@ -15,6 +15,7 @@ template <typename T> inline void OGLShader::setUniform(const std::string &name,
         if(location != -1) {
             m_uniforms.emplace(name, location);
             setUniform(location, value);
+            GL_CHECK_ERROR();
         } else {
             AVLIT_ERROR("Unknown uniform name: " + name);
         }

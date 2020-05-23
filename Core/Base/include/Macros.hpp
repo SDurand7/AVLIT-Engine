@@ -18,8 +18,8 @@
 static std::chrono::steady_clock::time_point start;
 
 #define AVLIT_ASSERT(test, msg)                                                                                        \
-    if(!test)                                                                                                          \
-        AVLIT_LOG(msg);                                                                                                \
+    if(!(test))                                                                                                          \
+        AVLIT_ERROR(msg);                                                                                              \
     assert(test)
 #define STR(v) std::to_string(v)
 #define VEC_STR(v) (STR(v.x) + " " + STR(v.y) + " " + STR(v.z) + " ")
@@ -28,8 +28,8 @@ static std::chrono::steady_clock::time_point start;
 #define ELAPSED()                                                                                                      \
     std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start).count() / 1000.f
 
-#ifdef __gl_h_
-#define WAIT_END() glFinish()
+#ifdef OPENGL
+#define WAIT() glFinish()
 #define GL_CHECK_ERROR()                                                                                               \
     {                                                                                                                  \
         GLenum error;                                                                                                  \
@@ -37,16 +37,16 @@ static std::chrono::steady_clock::time_point start;
             std::string errorMessage;                                                                                  \
             switch(error) {                                                                                            \
             case GL_INVALID_ENUM:                                                                                      \
-                errorMessage = "Invalid enum";                                                                         \
+                errorMessage = "invalid enum";                                                                         \
                 break;                                                                                                 \
             case GL_INVALID_VALUE:                                                                                     \
-                errorMessage = "Invalid value";                                                                        \
+                errorMessage = "invalid value";                                                                        \
                 break;                                                                                                 \
             case GL_INVALID_OPERATION:                                                                                 \
-                errorMessage = "Invalid operation";                                                                    \
+                errorMessage = "invalid operation";                                                                    \
                 break;                                                                                                 \
             case GL_INVALID_FRAMEBUFFER_OPERATION:                                                                     \
-                errorMessage = "Invalid framebuffer operation";                                                        \
+                errorMessage = "invalid framebuffer operation";                                                        \
                 break;                                                                                                 \
             }                                                                                                          \
             std::cerr << "[OGL ERROR]: " << errorMessage << AT;                                                        \
@@ -67,8 +67,8 @@ static std::chrono::steady_clock::time_point start;
 #define START_CLOCK() NONE
 #define ELAPSED() NONE
 
-#ifdef __gl_h_
-#define WAIT_END() NONE
+#ifdef OPENGL
+#define WAIT() NONE
 #define GL_CHECK_ERROR() NONE
 #endif
 

@@ -10,6 +10,7 @@
 
 namespace AVLIT {
 
+// Handle the creation/destruction of texture loaded in the AssetManager
 class TextureManager {
 public:
     TextureManager() = default;

@@ -24,6 +24,13 @@ void Engine::createInstance() {
     } else {
         AVLIT_LOG("initializing the engine...");
         m_instance = new Engine();
+
+#ifdef OPENGL
+        OGLRenderSystem::initGL();
+#else
+        // DX 11, DX 12, //
+#endif
+
         AVLIT_LOG("engine initialized");
     }
 }

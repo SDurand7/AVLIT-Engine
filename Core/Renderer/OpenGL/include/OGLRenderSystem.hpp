@@ -14,21 +14,25 @@
 
 
 namespace AVLIT {
+
+using OGLTextureUptr = std::unique_ptr<OGLTexture>;
+
 class OGLRenderSystem {
 public:
-    OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights);
+    // This needs to be called before anything else
+    static void initGL();
+
+    OGLRenderSystem(const std::vector<DrawableUptr> &drawables, const std::vector<LightUptr> &lights, Camera *camera);
 
     void reloadShaders();
 
     void render();
 
-    inline void setShowAABBs(bool showAABBs);
+    void setCurrentCamera(Camera *camera);
 
-    inline void setCurrentCamera(Camera *camera);
+    void setSkybox(const Texture *texture);
 
-    inline void setSkybox(const Texture *texture);
-
-    inline void resize(int width, int height);
+    void resize(uint width, uint height);
 
 private:
     Camera *m_camera = nullptr;
@@ -41,15 +45,15 @@ private:
 
     const OGLTexture *m_skybox = nullptr;
 
-    OGLFramebuffer m_GBuffer;
+    OGLTextureUptr m_noiseSSAO = nullptr;
 
-    OGLFramebuffer m_shadowMap;
+    OGLFramebuffer m_GBuffer{3};
 
-    OGLFramebuffer m_ssaoFBO;
+    OGLFramebuffer m_ssaoFBO{1};
 
-    OGLFramebuffer m_blurFBO;
+    OGLFramebuffer m_shadowMapFBO{1};
 
-    OGLFramebuffer m_hdrFBO;
+    OGLFramebuffer m_hdrFBO{1};
 
     OGLVAO m_quadVAO;
 
@@ -78,9 +82,9 @@ private:
 
     bool inFrustum(const AABB &aabb, const Mat4 &projection) const;
 
+    void initFBOs();
+
     void setupTextureUnits();
 };
 
 } // namespace AVLIT
-
-#include <Core/Renderer/OpenGL/inline/OGLRenderSystem.inl>

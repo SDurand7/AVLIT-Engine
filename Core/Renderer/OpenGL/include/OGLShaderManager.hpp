@@ -20,8 +20,7 @@ enum class OGLShaderType {
     SKYBOX = 3,
     TONEMAPPING = 4,
     SSAO = 5,
-    BLUR = 6,
-    COUNT = 7
+    COUNT = 6
 };
 
 using OGLShaderSources = std::vector<std::pair<OGLShaderType, OGLShaderStageFiles>>;

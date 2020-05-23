@@ -25,9 +25,7 @@ using Color4 = Vec4;
 
 using glm::value_ptr;
 
-#ifdef DX_
-/// Coming soon                                                                                            ... maybe not
-#else
+#ifdef OPENGL 
 class OGLRenderSystem;
 class OGLShader;
 class OGLVAO;
@@ -36,7 +34,9 @@ class OGLTexture;
 using RenderSystem = OGLRenderSystem;
 using Shader = OGLShader;
 using GPUBuffer = OGLVAO;
-using Texture = OGLTexture;
+using Texture = OGLTexture;                                                                                
+#else
+/// Coming soon
 #endif
 
 using RenderSystemUptr = std::unique_ptr<RenderSystem>;

@@ -2,6 +2,8 @@
 
 #include <Core/Base/include/Macros.hpp>
 #include <Core/Base/include/Types.hpp>
+#include <Core/Renderer/include/Shader.hpp>
+#include <Core/Renderer/include/Texture.hpp>
 
 
 namespace AVLIT {

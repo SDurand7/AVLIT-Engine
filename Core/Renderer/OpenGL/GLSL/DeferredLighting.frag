@@ -41,6 +41,19 @@ float shadow(vec4 position, vec3 normal) {
     return result / 16;
 }
 
+float occlusion() {
+    vec2 texelSize = 1.f / textureSize(occlusionMap, 0);
+    float result = 0.f;
+
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+            result += texture(occlusionMap, textureCoord + texelSize * vec2(i - 1.5f, j - 1.5f)).x;
+        }
+    }
+
+    return result / 16;
+}
+
 // Schlick's approximation
 vec3 fresnel(float hvDotWo, vec3 f0) { return f0 + (1.f - f0) * pow(1.f - hvDotWo, 5.f); }
 
@@ -75,7 +88,7 @@ void main() {
     vec4 albedo = texture(albedoMap, textureCoord);
 
     if(light.type == AMBIENT_LIGHT) {
-        outFragColor = vec4(texture(occlusionMap, textureCoord).x * light.color * albedo.rgb, albedo.a);
+        outFragColor = vec4(occlusion() * light.color * albedo.rgb, albedo.a);
     } else {
         vec4 normalZ = texture(normalZMap, textureCoord);
         vec3 normal = normalZ.xyz;

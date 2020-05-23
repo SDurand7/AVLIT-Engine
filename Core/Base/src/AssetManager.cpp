@@ -177,6 +177,10 @@ const Texture *loadTexture(aiMaterial *mat, const std::string &directory, aiText
             format = TextureFormat::R;
             internalFormat = TextureInternalFormat::R;
             break;
+        case 2:
+            format = TextureFormat::RG;
+            internalFormat = TextureInternalFormat::RG;
+            break;
         case 3:
             format = TextureFormat::RGB;
 

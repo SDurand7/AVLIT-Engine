@@ -8,7 +8,10 @@ inline void OGLVAO::operator=(OGLVAO &&vao) noexcept {
 
 inline bool OGLVAO::operator==(const OGLVAO &vao) const { return m_vaoID == vao.m_vaoID; }
 
-inline void OGLVAO::bind() const { glBindVertexArray(m_vaoID); }
+inline void OGLVAO::bind() const {
+    glBindVertexArray(m_vaoID);
+    GL_CHECK_ERROR();
+}
 
 inline void OGLVAO::unbindAll() { glBindVertexArray(0); }
 

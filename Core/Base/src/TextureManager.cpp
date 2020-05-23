@@ -9,7 +9,7 @@ const Texture *TextureManager::addTexture(const std::string &name, uchar **data,
     auto texture = std::make_unique<Texture>(internalFormat, format, textureType);
 
     Texture *texturePtr = texture.get();
-    texturePtr->allocate(data, width, height);
+    texturePtr->allocate<uchar>(width, height, data);
 
     m_textures.emplace(name, std::move(texture));
 
