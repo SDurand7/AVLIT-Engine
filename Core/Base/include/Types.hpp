@@ -30,17 +30,20 @@ class OGLRenderSystem;
 class OGLShader;
 class OGLVAO;
 class OGLTexture;
+class OGLFramebuffer;
 
 using RenderSystem = OGLRenderSystem;
 using Shader = OGLShader;
 using GPUBuffer = OGLVAO;
-using Texture = OGLTexture;                                                                                
+using Texture = OGLTexture;       
+using RenderTarget = OGLFramebuffer;
 #else
 /// Coming soon
 #endif
 
 using RenderSystemUptr = std::unique_ptr<RenderSystem>;
 using TextureUptr = std::unique_ptr<Texture>;
+using RenderTargetUptr = std::unique_ptr<RenderTarget>;
 
 enum class LightType { POINT_LIGHT = 0, DIRECTIONAL_LIGHT = 1, SPOT_LIGHT = 2, AMBIENT_LIGHT = 3 };
 

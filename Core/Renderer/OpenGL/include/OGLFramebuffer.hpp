@@ -44,6 +44,8 @@ public:
 
     void resizeRBO(GLenum format, GLuint width, GLuint height);
 
+    void setupShadowMap(uint width, uint height);
+
     // Mandatory because of Qt
     inline static void saveDefault();
 

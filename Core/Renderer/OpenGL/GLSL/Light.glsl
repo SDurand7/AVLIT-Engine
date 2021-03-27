@@ -16,6 +16,11 @@ struct Light {
     vec3 direction;
     float cosInnerAngle;
     float cosOuterAngle;
+
+    mat4 lightVP;
+
+    sampler2DShadow shadowMap;
+    samplerCubeShadow shadowCubemap;
 };
 
 vec3 lightVector(Light l, vec3 position) {

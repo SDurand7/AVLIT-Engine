@@ -49,5 +49,5 @@ void main() {
         occlusion += float(sampleDepth > sampleView.z) * float(abs(position.z - sampleDepth) < radius);
     }
 
-    occlusion = 1 - occlusion / 64;
+    occlusion = 1.f - occlusion / 64.f;
 }

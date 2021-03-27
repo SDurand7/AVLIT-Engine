@@ -18,6 +18,12 @@ inline Mat4 Light::view() const {
     return view;
 }
 
+const RenderTarget *Light::shadowMap() const { return m_shadowMap.get(); }
+
+inline uint Light::shadowMapWidth() const { return m_shadowMapWidth; }
+
+inline uint Light::shadowMapHeight() const { return m_shadowMapHeight; }
+
 inline Color3 Light::color() const { return m_color; }
 
 inline void Light::setColor(const Color3 &color) { m_color = color; }

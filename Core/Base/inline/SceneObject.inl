@@ -18,7 +18,7 @@ inline void SceneObject::translate(const Vec3 &translation) {
         m_graphNode->updateParentsAABBs();
 }
 
-inline const std::string &SceneObject::name() { return m_name; }
+inline const std::string &SceneObject::name() const { return m_name; }
 
 inline const Transform &SceneObject::transform() const { return m_transform; }
 

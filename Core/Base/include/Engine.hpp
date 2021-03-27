@@ -1,9 +1,8 @@
 #pragma once
 
-#ifdef DX_
-
-#else
+#ifdef OPENGL
 #include <Core/Renderer/OpenGL/include/glad.h>
+#else
 #endif
 
 #include <Core/Base/include/Macros.hpp>

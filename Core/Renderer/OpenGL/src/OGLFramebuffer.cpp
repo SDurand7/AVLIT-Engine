@@ -10,7 +10,7 @@
 
 
 namespace AVLIT {
-
+    
 GLint OGLFramebuffer::m_defaultID = -1;
 
 OGLFramebuffer::OGLFramebuffer(GLuint textureCount) : m_textures(textureCount) { glGenFramebuffers(1, &m_fboID); }
@@ -62,6 +62,23 @@ void OGLFramebuffer::resizeRBO(GLenum format, GLuint width, GLuint height) {
         glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
         GL_CHECK_ERROR();
     }
+}
+
+void OGLFramebuffer::setupShadowMap(uint width, uint height) {
+    bind();
+
+    auto texture = std::make_unique<Texture>(TextureInternalFormat::DEPTH, TextureFormat::DEPTH, TextureType::TEXTURE2D,
+                                             TextureDataType::FLOAT, false);
+    texture->bind(1);
+    texture->allocate<nullptr_t>(width, height, nullptr);
+    texture->setParameter(GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+
+    attachTexture("shadowMap", std::move(texture), GL_DEPTH_ATTACHMENT);
+    setDrawBuffer(GL_NONE);
+    setReadBuffer(GL_NONE);
+
+    if(!isComplete())
+        AVLIT_ERROR("incomplete shadow map FBO");
 }
 
 } // namespace AVLIT

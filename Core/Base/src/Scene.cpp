@@ -40,13 +40,13 @@ SceneBVHNode *Scene::addLight(SceneBVHNode *parent, const std::string &name, con
                               const Color3 &color, float innerAngle, float outerAngle) {
     switch(type) {
     case LightType::POINT_LIGHT:
-        m_lights.emplace_back(std::make_unique<PointLight>(name, transform, color));
+        m_lights.emplace_back(std::make_unique<PointLight>(name, transform, 800, 800, color));
         break;
     case LightType::DIRECTIONAL_LIGHT:
-        m_lights.emplace_back(std::make_unique<DirectionalLight>(name, transform, color));
+        m_lights.emplace_back(std::make_unique<DirectionalLight>(name, transform, 2048, 2048, color));
         break;
     case LightType::SPOT_LIGHT:
-        m_lights.emplace_back(std::make_unique<SpotLight>(name, transform, color, innerAngle, outerAngle));
+        m_lights.emplace_back(std::make_unique<SpotLight>(name, transform, 800, 800, color, innerAngle, outerAngle));
         break;
     default:
         return nullptr;

@@ -51,8 +51,6 @@ private:
 
     OGLFramebuffer m_ssaoFBO{1};
 
-    OGLFramebuffer m_shadowMapFBO{1};
-
     OGLFramebuffer m_hdrFBO{1};
 
     OGLVAO m_quadVAO;
@@ -72,13 +70,9 @@ private:
 
     void skyboxPass();
 
-    void drawLight(Light *light);
+    void drawBatch(const Light *lights[], uint size, bool &firstBatch);
 
-    void drawShadowMap(Light *light);
-
-    void traverseGraph(OGLShader *shader, const SceneBVHNode *node) const;
-
-    void drawAABB(OGLShader *shader, const AABB &aabb) const;
+    void drawShadowMap(const Light *light);
 
     bool inFrustum(const AABB &aabb, const Mat4 &projection) const;
 

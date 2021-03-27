@@ -55,7 +55,12 @@ void MainWindow::initializeDemo() {
         Qt::Key::Key_F, [app = m_app.get()](float) { app->switchLightState(); }, false);
 
     m_eventManager.addKey(
-        Qt::Key::Key_F5, [app = m_app.get()](float) { app->reloadShaders(); }, false);
+        Qt::Key::Key_F5,
+        [app = m_app.get(), this](float) {
+            ui->oglWidget->makeCurrent();
+            app->reloadShaders();
+        },
+        false);
 
     m_eventManager.setMouseCallback(MouseEvent::LEFT_DRAGGED, [app = m_app.get()](QPoint start, QPoint end) {
         int dx = end.x() - start.x();

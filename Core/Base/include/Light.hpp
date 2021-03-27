@@ -1,22 +1,32 @@
 #pragma once
 
 #include <Core/Base/include/SceneObject.hpp>
+#include <Core/Renderer/include/RenderTarget.hpp>
 
 
 namespace AVLIT {
 
 class Light : public SceneObject {
 public:
+    Light(const Light &light) = delete;
+
     // transform should be a composition of a rotation and a translation, debug models should be scaled on load
-    Light(const std::string &name, const Transform &transform, const Color3 &color);
+    Light(const std::string &name, const Transform &transform, uint shadowMapWidth, uint shadowMapHeight,
+          const Color3 &color);
 
     virtual ~Light() = default;
 
-    virtual void setParameters(const std::string& name, Shader *shader) const = 0;
+    virtual void setParameters(const std::string &name, Shader *shader, int textureUnit) const = 0;
 
     virtual const Mat4 &projection() const = 0;
 
     inline Mat4 view() const;
+
+    inline const RenderTarget *shadowMap() const;
+
+    inline uint shadowMapWidth() const;
+
+    inline uint shadowMapHeight() const;
 
     AVLIT_API inline Color3 color() const;
 
@@ -27,6 +37,12 @@ public:
     AVLIT_API inline void switchState();
 
 protected:
+    RenderTargetUptr m_shadowMap;
+
+    uint m_shadowMapWidth;
+
+    uint m_shadowMapHeight;
+
     Color3 m_color;
 
     bool m_lit = true;
@@ -34,9 +50,10 @@ protected:
 
 class PointLight : public Light {
 public:
-    PointLight(const std::string &name, const Transform &transform, const Color3 &color);
+    PointLight(const std::string &name, const Transform &transform, uint shadowMapWidth, uint shadowMapHeight,
+               const Color3 &color);
 
-    void setParameters(const std::string &name, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader, int textureUnit) const override;
 
     const Mat4 &projection() const override;
 
@@ -47,9 +64,10 @@ private:
 
 class DirectionalLight : public Light {
 public:
-    DirectionalLight(const std::string &name, const Transform &transform, const Color3 &color);
+    DirectionalLight(const std::string &name, const Transform &transform, uint shadowMapWidth, uint shadowMapHeight,
+                     const Color3 &color);
 
-    void setParameters(const std::string &name, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader, int textureUnit) const override;
 
     const Mat4 &projection() const override;
 
@@ -59,10 +77,10 @@ private:
 
 class SpotLight : public Light {
 public:
-    SpotLight(const std::string &name, const Transform &transform, const Color3 &color, float innerAngle,
-              float outerAngle);
+    SpotLight(const std::string &name, const Transform &transform, uint shadowMapWidth, uint shadowMapHeight,
+              const Color3 &color, float innerAngle, float outerAngle);
 
-    void setParameters(const std::string &name, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader, int textureUnit) const override;
 
     const Mat4 &projection() const override;
 
@@ -86,7 +104,7 @@ class AmbientLight : public Light {
 public:
     AmbientLight(const std::string &name, const Transform &transform, const Color3 &color);
 
-    void setParameters(const std::string &name, Shader *shader) const override;
+    void setParameters(const std::string &name, Shader *shader, int textureUnit) const override;
 
     const Mat4 &projection() const override;
 

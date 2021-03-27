@@ -21,7 +21,7 @@ public:
 
     AVLIT_API inline void translate(const Vec3 &translation);
 
-    AVLIT_API inline const std::string &name();
+    AVLIT_API inline const std::string &name() const;
 
     AVLIT_API inline const Transform &transform() const;
 

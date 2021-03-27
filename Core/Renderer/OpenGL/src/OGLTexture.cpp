@@ -9,6 +9,11 @@ OGLTexture::OGLTexture(TextureInternalFormat internalFormat, TextureFormat forma
     : m_internalFormat{static_cast<GLint>(internalFormat)}, m_format{static_cast<GLenum>(format)},
       m_textureType{static_cast<GLuint>(textureType)}, m_dataType{static_cast<GLenum>(dataType)}, m_generateMipmap{
                                                                                                       generateMipmap} {
+    // Silence warnings with clang VC19 integration
+    std::ignore = m_internalFormat;
+    std::ignore = m_format;
+    std::ignore = m_dataType;
+    
     glGenTextures(1, &m_textureID);
     glBindTexture(m_textureType, m_textureID);
 
