@@ -72,11 +72,10 @@ The demo uses Qt (feel free to modify the CMakeLists.txt file in the Application
 
 
 ## What's coming
-Here's a non exhaustive list of features I plan on implementing:
+Here's a non exhaustive list of things I'll be working on in the near future:
 
- - SMAA
- - Area lights
- - DX12
- - SSGI
+ - A DirectX 11 renderer (to be integrated soon)
+ - A particle system
+ - Voxel GI
  - SSR
 

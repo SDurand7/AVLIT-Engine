@@ -36,7 +36,6 @@ PointLight::PointLight(const std::string &name, const Transform &transform, uint
                        const Color3 &color)
     : Light{name, transform, shadowMapWidth, shadowMapHeight, color} {}
 
-// TODO: fix when I had PL's shadow maps
 void PointLight::setParameters(const std::string &name, Shader *shader, int textureUnit) const {
     shader->setUniform(name + ".type", static_cast<uint>(LightType::POINT_LIGHT));
     shader->setUniform(name + ".color", m_color);
