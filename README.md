@@ -1,5 +1,5 @@
 # AVLIT-Engine
-I guess you guys aren't ready for that yet, but your kids are gonna love it.
+Not maintained anymore. Brand new engine incomming.
 
 ## How to build
 The project uses CMake to build the engine and the application (minimum version 3.2).
