@@ -1,5 +1,5 @@
 # AVLIT-Engine
-Not maintained anymore. Brand new engine incomming.
+Not maintained anymore. Brand new engine incoming.
 
 ## How to build
 The project uses CMake to build the engine and the application (minimum version 3.2).
