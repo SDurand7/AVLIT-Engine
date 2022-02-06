@@ -1,5 +1,5 @@
 # AVLIT-Engine
-Not maintained anymore. Brand new engine incoming.
+Not maintained anymore. 
 
 ## How to build
 The project uses CMake to build the engine and the application (minimum version 3.2).
@@ -69,13 +69,4 @@ bin/Demo
  - [stb](https://github.com/nothings/stb) to import textures
 
 The demo uses Qt (feel free to modify the CMakeLists.txt file in the Application directory to avoid building it).
-
-
-## What's coming
-Here's a non exhaustive list of things I'll be working on in the near future:
-
- - A DirectX 11 renderer (to be integrated soon)
- - A particle system
- - Voxel GI
- - SSR
 
